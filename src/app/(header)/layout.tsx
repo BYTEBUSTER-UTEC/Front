@@ -11,11 +11,9 @@ export default function HeaderLayout({
   return (
     <div className="flex flex-col max-w-[1280px] w-full ">
       <Navbar />
-      <div className="w-full h-full flex pt-2">
+      <div className="w-full flex mt-2">
         <LeftPanel /> {/*ocultar dependiendo de la ubicacion*/}
-        <div className="min-w-[70%] w-full bg-[#f7f5ed] rounded-xl p-2">
-          {children}
-        </div>
+        <div className="min-w-[70%] w-full h-full">{children}</div>
         <RightPanel />
       </div>
     </div>

@@ -95,7 +95,7 @@ export const CompanyProfile =
     } else
       return (
         <div className="flex w-full h-full flex-col">
-          <div className="w-full flex flex-col relative rounded-t-xl h-full">
+          <div className="w-full flex flex-col rounded-t-xl h-full">
             <div className="w-full h-[40%]">
               <img
                 className="h-full w-full rounded-t-xl"

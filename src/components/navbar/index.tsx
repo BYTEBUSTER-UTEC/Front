@@ -1,5 +1,6 @@
 "use client";
 
+import { AppLogo } from "@/commons/logo";
 import { usePathname, useRouter } from "next/navigation";
 import React, { MouseEvent } from "react";
 
@@ -20,9 +21,9 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row w-full h-[50px] justify-between rounded-xl bg-[#f7f5ed] mt-2">
+    <div className="flex flex-row w-full h-[50px] justify-between rounded-xl bg-cardLight mt-2 pl-2 pr-2">
       <div className="max-w-[25%] w-full flex items-center h-full p-2">
-        logo
+        <AppLogo />
       </div>
       <div className="max-w-[40%] w-full flex items-center justify-around p-2">
         {links.map(({ href, label }) => (
@@ -31,7 +32,7 @@ export const Navbar: React.FC = () => {
             href={href}
             onClick={(e) => goTo(e, href)}
             className={`cursor-default hover:text-black transition-colors duration-300 ${
-              pathname === href ? "text-black font-bold" : ""
+              pathname.includes(href) ? "text-black font-bold" : ""
             }`}
           >
             {label}

@@ -1,6 +1,13 @@
 import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
+import { StoreProvider } from "@/store/StoreProvider";
+import { Roboto } from "next/font/google";
+
+const roboto = Roboto({
+  subsets: ["latin"],
+  weight: ["400", "700"],
+});
 
 const geistSans = localFont({
   src: "./fonts/GeistVF.woff",
@@ -24,12 +31,14 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased w-full h-full flex justify-center`}
-      >
-        {children}
-      </body>
-    </html>
+    <StoreProvider>
+      <html lang="en">
+        <body
+          className={`${roboto.className} w-full h-full flex justify-center`}
+        >
+          {children}
+        </body>
+      </html>
+    </StoreProvider>
   );
 }

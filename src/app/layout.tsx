@@ -34,7 +34,7 @@ export default function RootLayout({
     <StoreProvider>
       <html lang="en">
         <body
-          className={`${roboto.className} w-full h-full flex justify-center`}
+          className={`${roboto.className} w-full max-h-[100vh] h-full flex justify-center`}
         >
           {children}
         </body>

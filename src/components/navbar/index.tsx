@@ -21,8 +21,8 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row w-full h-[50px] justify-between rounded-xl bg-cardLight mt-2 pl-2 pr-2">
-      <div className="max-w-[25%] w-full flex items-center h-full p-2">
+    <div className="flex flex-row w-full h-[50px] justify-between rounded-xl bg-cardLight mt-2 pl-2 pr-2 relative">
+      <div className="max-w-[25%] w-full flex items-center h-full p-2 ">
         <AppLogo />
       </div>
       <div className="max-w-[40%] w-full flex items-center justify-around p-2">

@@ -52,6 +52,7 @@ const config: Config = {
           "5": "hsl(var(--chart-5))",
         },
         cardLight: "#f7f5ed",
+        buttonBlue: "#2d2d2c",
       },
       borderRadius: {
         lg: "var(--radius)",

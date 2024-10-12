@@ -20,7 +20,7 @@ export const Navbar: React.FC = () => {
   };
 
   return (
-    <div className="flex flex-row w-full h-[90px] justify-between rounded-xl bg-[#f7f5ed] mt-2">
+    <div className="flex flex-row w-full h-[50px] justify-between rounded-xl bg-[#f7f5ed] mt-2">
       <div className="max-w-[25%] w-full flex items-center h-full p-2">
         logo
       </div>

@@ -17,7 +17,7 @@ export default function Home() {
   if (loading) return <Spinner />;
   else
     return (
-      <main className="w-full h-[100vh]">
+      <main className="w-full ">
         <Login logged={false} />
       </main>
     );

@@ -38,7 +38,7 @@ const UserProfile: React.FC = () => {
         <div className="flex flex-col items-start ">
           <div className="flex items-baseline gap-5">
             <h1 className="text-2xl font-bold">{formData.nombre}</h1>
-            <span className="text-[#9E3F90]">
+            <span className="text-blue-500">
             <strong>{formData.contactos} contactos</strong>
             </span>
           </div>

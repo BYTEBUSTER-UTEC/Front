@@ -18,7 +18,21 @@ export const Posts = () => {
         countDislike: 12,
         post_text: "Soy una ballena de color azul. Mi espalda sopla y tú ves esa fuente de agua limpia aún. Nuestra casa abierta, era el ancho mar. Viajábamos en paz sin manchas de petróleo que evitar. Busco un sitio puro donde descansar. No hay muchas como yo, me tengo que cuidar de ti. Nubes blancas, cielo transparente y el humano compartiendo con otros un sueño que quizás ya no regrese, pues ya es tarde para todos nosotros. Soy el cóndor majestuoso del Perú. Mi cuello gira y tú me miras con ojos de luz. Busco un sitio alto donde recordar que hubo un tiempo mejor, pues como yo no quedan más. Si tus hijos te preguntan cómo fui, no sé que les dirás, me tuve que alejar de ti. Cordilleras blancas dominando todo ser que se alimenta del río. Hombres en aldeas cultivando sin decirle al campo dame lo que es mío. Estás equivocado, no sabes dónde vas. No te asustes si tu nieto te pregunta: ¿qué hiciste con el amigo gavilán? Estás equivocado, no sabes dónde vas. Guanacos, osos panda, renos, águilas, delfines y todo lo demás. Estás equivocado, no sabes donde vas. Estás equivocado, no sabes donde vas. Estás equivocado, no sabes donde vas. Un espíritu ronda por la selva llorando lo que fue el jaguar. Estás equivocado, no sabes donde vas. Bienvenido al mundo del hombre construido con detergentes y también con alquitrán. Soy una ballena de color azul. Mi espalda sopla y tú ves esa fuente de agua limpia aún.",
         Comentarios:
-          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia amet perferendis pariatur aut voluptas illum perspiciatis. Eos laboriosam incidunt aut sit ipsum saepe, tempore, sint dolor recusandae sequi assumenda nemo? Lorem ipsum dolor sit amet consectetur adipisicing elit. Et expedita molestiae optio quam aliquam quasi pariatur quis reiciendis rerum ut odit, voluptatem natus deserunt ducimus autem maiores dignissimos consequuntur velit!",
+          [
+            {
+              profile_img: "",
+              name: "Manuel A",
+              time: "12",
+              comment: "Soy una ballena de color azul Mi espalda sopla y tú Ves esa fuente de agua limpia aún Nuestra casa abierta, era el ancho mar Viajábamos en paz Sin manchas de petróleo que evitar Busco un sitio puro donde descansar No hay muchas como yo Me tengo que cuidar de ti"
+            }, 
+            {
+              profile_img: "",
+              name: "Luis A",
+              time: "14",
+              comment: "Soy una ballena de color azul Mi espalda sopla y tú Ves esa fuente de agua limpia aún Nuestra casa abierta, era el ancho mar Viajábamos en paz Sin manchas de petróleo que evitar Busco un sitio puro donde descansar No hay muchas como yo Me tengo que cuidar de ti"
+            },
+
+          ],  
         slug: "google-inc",
       }, 
       {
@@ -34,7 +48,21 @@ export const Posts = () => {
         countDislike: 12,
         post_text: "Soy una ballena de color azul. Mi espalda sopla y tú ves esa fuente de agua limpia aún. Nuestra casa abierta, era el ancho mar. Viajábamos en paz sin manchas de petróleo que evitar. Busco un sitio puro donde descansar. No hay muchas como yo, me tengo que cuidar de ti. Nubes blancas, cielo transparente y el humano compartiendo con otros un sueño que quizás ya no regrese, pues ya es tarde para todos nosotros. Soy el cóndor majestuoso del Perú. Mi cuello gira y tú me miras con ojos de luz. Busco un sitio alto donde recordar que hubo un tiempo mejor, pues como yo no quedan más. Si tus hijos te preguntan cómo fui, no sé que les dirás, me tuve que alejar de ti. Cordilleras blancas dominando todo ser que se alimenta del río. Hombres en aldeas cultivando sin decirle al campo dame lo que es mío. Estás equivocado, no sabes dónde vas. No te asustes si tu nieto te pregunta: ¿qué hiciste con el amigo gavilán? Estás equivocado, no sabes dónde vas. Guanacos, osos panda, renos, águilas, delfines y todo lo demás. Estás equivocado, no sabes donde vas. Estás equivocado, no sabes donde vas. Estás equivocado, no sabes donde vas. Un espíritu ronda por la selva llorando lo que fue el jaguar. Estás equivocado, no sabes donde vas. Bienvenido al mundo del hombre construido con detergentes y también con alquitrán. Soy una ballena de color azul. Mi espalda sopla y tú ves esa fuente de agua limpia aún.",
         Comentarios:
-          "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia amet perferendis pariatur aut voluptas illum perspiciatis. Eos laboriosam incidunt aut sit ipsum saepe, tempore, sint dolor recusandae sequi assumenda nemo? Lorem ipsum dolor sit amet consectetur adipisicing elit. Et expedita molestiae optio quam aliquam quasi pariatur quis reiciendis rerum ut odit, voluptatem natus deserunt ducimus autem maiores dignissimos consequuntur velit!",
+          [
+            {
+              profile_img: "https://elcomercio.pe/resizer/v2/6Y2EDIISGFGVFANEVDCR5LCG34.jpg?auth=f58b5c647a09717054d85bb8b9a6bc624bfcb14fe9c60b5246730ea6a513e2b0&width=1200&height=810&quality=90&smart=true",
+              name: "Manuel B",
+              time: "12",
+              comment: "Soy una ballena de color azul Mi espalda sopla y tú Ves esa fuente de agua limpia aún Nuestra casa abierta, era el ancho mar Viajábamos en paz Sin manchas de petróleo que evitar Busco un sitio puro donde descansar No hay muchas como yo Me tengo que cuidar de ti"
+            }, 
+            {
+              profile_img: "",
+              name: "Luis C",
+              time: "14",
+              comment: "Soy una ballena de color azul Mi espalda sopla y tú Ves esa fuente de agua limpia aún Nuestra casa abierta, era el ancho mar Viajábamos en paz Sin manchas de petróleo que evitar Busco un sitio puro donde descansar No hay muchas como yo Me tengo que cuidar de ti"
+            },
+
+          ],  
         slug: "google-inc",
       }
     ];
@@ -44,6 +72,8 @@ export const Posts = () => {
     const onDisLike = () => {
       console.log("Dislike añadido correctamente")
     };
+
+    
 
     
 

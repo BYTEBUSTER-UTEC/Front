@@ -1,45 +1,37 @@
 "use client";
 import React, { useState } from 'react';
-
-interface UserProfileData {
-  nombre?: string;
-  contactos?: string;
-  centro_educativo?: string;
+import { FaGithub } from "react-icons/fa";
+import { FaLinkedin } from "react-icons/fa";
+interface user_prev_info {
+    img_banner?: string; 
+    img_profile?: string; 
+    name?: string;
+    contacts?: string;
+    educative_center?: string;
   ciclo?: string;
-  habilidades_tecnicas?: string[];
+  abilities?: string[];
 }
 
-const UserProfile: React.FC = () => {
-  const [formData, setFormData] = useState<UserProfileData>({
-    nombre: 'Nombre Apellido',
-    contactos: '500',
-    centro_educativo: 'Universidad de Ingenieria y Tecnologia (UTEC)',
-    ciclo: '5',
-    habilidades_tecnicas: ['Ciencias de la Computación',
-        'Base de datos', "Diseño de Algortimo", "Algoritmos Avanzados",
-        "Comunicación 1" 
-    ],
-  });
+export const PersonCard = ({ info }: { info: user_prev_info }) => {
+  
   return (
-
-    
     // Container
     <div className="bg-[#f7f5ed] rounded-2xl m-0 p-0"> 
 
       <div className="w-full h-72 overflow-hidden rounded-t-2xl">
-        <img src="/images/banner.jpg" alt="banner" className="w-full h-full object-cover" />
+        <img src={info.img_banner} alt="banner" className="w-full h-full object-cover" />
       </div>
 
       <div className="relative w-36 h-36 rounded-full overflow-hidden border-4 border-white -mt-20 ml-11">
-        <img src="/images/ProfileDefault.jpg" alt="User Profile" className="w-full h-full object-cover" />
+        <img src={info.img_profile} alt="User Profile" className="w-full h-full object-cover" />
       </div>
       {/* Nombre e informacion */}
       <div className="pt-16 pl-11 grid grid-cols-2 gap-10 -mt-10">
         <div className="flex flex-col items-start ">
           <div className="flex items-baseline gap-5">
-            <h1 className="text-2xl font-bold">{formData.nombre}</h1>
-            <span className="text-blue-500">
-            <strong>{formData.contactos} contactos</strong>
+            <h1 className="text-2xl font-bold">{info.name}</h1>
+            <span className="text-[#9E3F90]">
+            <strong>{info.contacts} contactos</strong>
             </span>
           </div>
           <p className="text-gray-500">Ciencia de la computación</p>
@@ -48,22 +40,22 @@ const UserProfile: React.FC = () => {
             <h1 className="text-xl font-semibold mt-2">Información:</h1>
               <ul className="list-disc pl-5">
                 <li>
-                  <strong>Centro Educativo</strong>: {formData.centro_educativo}
+                  <strong>Centro Educativo</strong>: {info.educative_center}
                 </li>
                 <li>
-                  <strong>Ciclo</strong>: {formData.ciclo}
+                  <strong>Ciclo</strong>: {info.ciclo}
                 </li>
             </ul>
           </div>
         </div>
         {/* Buttons lilnkedin and github */}
         <div className="grid grid-cols-2 gap-4">
-          <div className="flex gap-6">
-            <div className="w-10 h-10">
-            <img src="/images/git.png" alt="GitHub" className="w-full h-full object-cover" />
+          <div className="flex gap-3">
+            <div >
+            <FaGithub className="w-10 h-10" />
             </div>
-            <div className="w-10 h-10">
-            <img src="/images/linkedin.png" alt="LinkedIn" className="w-full h-full object-cover" />
+            <div >
+              <FaLinkedin className="w-10 h-10" />
             </div>
           </div>
 
@@ -80,7 +72,7 @@ const UserProfile: React.FC = () => {
         <div className="col-span-2">
           <h1 className="text-xl font-semibold mt-4">Habilidades Técnicas</h1>
           <div className="flex flex-wrap gap-4 mt-2">
-            {formData.habilidades_tecnicas?.map((habilidad, index) => (
+            {info.abilities?.map((habilidad, index) => (
               <div key={index} className="bg-white rounded-lg p-2 min-w-[100px] text-center">
                 {habilidad}
               </div>
@@ -93,4 +85,3 @@ const UserProfile: React.FC = () => {
   );
 };
 
-export default UserProfile;

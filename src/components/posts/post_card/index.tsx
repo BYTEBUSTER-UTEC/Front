@@ -1,8 +1,18 @@
+  
   import { Button } from "@/components/ui/button";
-  import React from "react";
+  import React, {useState} from "react";
   import { FaStar } from "react-icons/fa";
   import { AiOutlineLike } from "react-icons/ai";
   import { AiOutlineDislike } from "react-icons/ai";
+  import { useEffect} from "react";
+  import { FaUserCircle } from "react-icons/fa";
+
+  interface Comment {
+    profile_img: string;
+    name: string;
+    time: string;
+    comment: string;
+  }
 
   interface PostCard_info {
     time: number; // Se agregó para incluir el tiempo
@@ -15,12 +25,15 @@
     countLike: number; 
     countDislike: number; 
     post_text: string;
-    Comentarios: string; 
+    Comentarios: Comment[];
     slug: string;
   }
 
   export const PostCard = ({ info, onLike, onDisLike }: 
     { info: PostCard_info, onLike:() => void, onDisLike:()=>void}) => {
+      const [seeComments, setSeeComments] = useState(false); 
+
+
     return (
       <div className="bg-[#f7f5ed] rounded-xl p-4 pl-6 pr-6 mb-2">
         {/* head */}
@@ -69,12 +82,38 @@
               <AiOutlineDislike className="h-5 w-5" />
           </Button>
 
-          <Button 
+          <Button onClick={()=>{setSeeComments(!seeComments)}}
             variant="outline"
-          className="w-60">
+            className="w-60">
             Comentarios
+            
           </Button>
+          
         </div>
+
+        {seeComments && (
+              <div className="bg-white mt-5 rounded-xl p-5">
+                  {info.Comentarios.map((comentario, index) => (
+                    <div key={index} className="mb-5">
+                      <div className="flex gap-2 items-center">
+                        
+                        <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
+                            {comentario.profile_img === "" ?
+                            (<FaUserCircle className="w-full h-full"/>):
+                            (<img className="w-full h-full object-cover" src={comentario.profile_img} alt="" />)}
+                        </div>
+                        <h2 className="font-bold">{comentario.name}</h2>
+                        <p className="text-gray-500 text-sm">{comentario.time} h</p>
+                      </div>
+                      <ul className="text-justify">
+                        <li><p>{comentario.comment}</p></li>
+                      </ul>
+                      
+                    </div>
+                  ))}
+              </div>
+            )}
+
 
       </div>
     );

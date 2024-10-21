@@ -1,23 +1,21 @@
 "use client";
-
-import { AppLogo } from "@/commons/logo";
 import { Spinner } from "@/commons/spinner";
-import Login from "@/components/login";
-import { Button } from "@/components/ui/button";
-import Image from "next/image";
+import { useContext, useEffect, useState } from "react";
+import AuthContext from "./context/AuthContext";
 import { useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
 
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [logged, setLogged] = useState<boolean>(false);
+  const context = useContext(AuthContext);
   const router = useRouter();
 
   useEffect(() => {
     setLoading(true);
 
-    if(!logged) {
+    if(!context?.user) {
       router.push("/login");
+    } else {
+      router.push("/home");
     }
   }, []);
 

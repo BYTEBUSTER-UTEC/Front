@@ -2,6 +2,7 @@ import type { Metadata } from "next";
 import localFont from "next/font/local";
 import "./globals.css";
 import { StoreProvider } from "@/store/StoreProvider";
+import { AuthProvider } from "./context/AuthContext";
 import { Roboto } from "next/font/google";
 
 const roboto = Roboto({
@@ -32,6 +33,7 @@ export default function RootLayout({
 }>) {
   return (
     <StoreProvider>
+      <AuthProvider>
       <html lang="en">
         <body
           className={`${roboto.className} w-full max-h-[100vh] h-full flex justify-center`}
@@ -39,6 +41,7 @@ export default function RootLayout({
           {children}
         </body>
       </html>
+      </AuthProvider>
     </StoreProvider>
   );
 }

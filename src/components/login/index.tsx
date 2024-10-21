@@ -1,30 +1,30 @@
+"use client";
 import { AppLogo } from "@/commons/logo";
 import { Spinner } from "@/commons/spinner";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/navigation";
-import React, { useEffect, useState } from "react";
-
-
-//Modificar
+import React, { useEffect, useState, useContext } from "react";
+import AuthContext from "@/app/context/AuthContext";
 
 const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(true);
-  const [logged, setLogged] = useState<boolean>(false);
+  const context = useContext(AuthContext);
 
   useEffect(() => {
-    if (logged) {
+    if (context?.user) {
       router.push("/home");
-    } else setLoading(false);
+    } else
+      setLoading(false);
   }, []);
-
-  const login = () => {
-    setLoading(true);
-    router.push("/home");
-  };
 
   const register = () => {
     router.push("/register");
+  }
+
+  const handleSubmit = async (event: any) => {
+    event.preventDefault();
+    context?.login(event.target.email.value, event.target.password.value);
   }
 
   return (
@@ -39,11 +39,11 @@ const Login = () => {
             Ingresa tu información.
           </h3>
         </div>
-        <form className="flex flex-col gap-2">
+        <form className="flex flex-col gap-2" onSubmit={handleSubmit}>
           <input placeholder="Email" name="email" className="text-sm p-3 px-5 rounded-lg"></input>
           <input placeholder="Contraseña" name="password" className="text-sm p-3 px-5 rounded-lg" type="password"></input>
+          {loading ? <Spinner /> : <Button className="w-full mt-4" type="submit">Login</Button>}
         </form>
-        {loading ? <Spinner /> : <Button onClick={login} className="w-full">Login</Button>}
         <button className="mx-auto w-fit text-sm hover:underline" onClick={register}>Registrarse</button>
       </div>
     </div>

@@ -1,10 +1,10 @@
 "use client"
-import Login from "@/components/login";
+import CompanyForm from "@/components/register/forms/company";
 
 export default function Page() {
     return (
         <main className="flex h-screen justify-center items-center">
-            <Login />
+            <CompanyForm />
         </main>
     )
 }

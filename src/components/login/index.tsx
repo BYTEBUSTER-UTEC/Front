@@ -23,6 +23,10 @@ const Login = () => {
     router.push("/home");
   };
 
+  const register = () => {
+    router.push("/register");
+  }
+
   return (
     <div className="min-w-96 flex items-center justify-center bg-[#F7F5ED] p-12 rounded-2xl">
       <div className="flex flex-col gap-6 w-full">
@@ -31,16 +35,16 @@ const Login = () => {
           <h1 className="font-bold text-3xl mt-4">
             Login
           </h1>
-          <h3>
+          <h3 className="text-sm font-normal p-2">
             Ingresa tu información.
           </h3>
         </div>
-        <div className="flex flex-col gap-2">
-          <input placeholder="Email" className="text-sm p-3 px-5 rounded-lg"></input>
-          <input placeholder="Contrasenia" className="text-sm p-3 px-5 rounded-lg" type="password"></input>
-        </div>
+        <form className="flex flex-col gap-2">
+          <input placeholder="Email" name="email" className="text-sm p-3 px-5 rounded-lg"></input>
+          <input placeholder="Contraseña" name="password" className="text-sm p-3 px-5 rounded-lg" type="password"></input>
+        </form>
         {loading ? <Spinner /> : <Button onClick={login} className="w-full">Login</Button>}
-        <button>Registrarse</button>
+        <button className="mx-auto w-fit text-sm hover:underline" onClick={register}>Registrarse</button>
       </div>
     </div>
   );

@@ -21,11 +21,12 @@ export default function Home() {
     }
   }, []);
 
-  if (loading) return <Spinner />;
-  else
   return (
     <main className="w-full h-[100vh]">
-        
+      {loading ?
+        <div className="p-4">
+          <Spinner />
+        </div> : ""}
     </main>
   );
 }

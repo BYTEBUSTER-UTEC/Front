@@ -2,21 +2,12 @@
 import { AppLogo } from "@/commons/logo";
 import { Spinner } from "@/commons/spinner";
 import { Button } from "@/components/ui/button";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState, useContext } from "react";
-import AuthContext from "@/app/context/AuthContext";
 
 const Login = () => {
   const router = useRouter();
-  const [loading, setLoading] = useState<boolean>(true);
-  const context = useContext(AuthContext);
-
-  useEffect(() => {
-    if (context?.user) {
-      router.push("/home");
-    } else
-      setLoading(false);
-  }, []);
+  const [loading, setLoading] = useState<boolean>(false);
 
   const register = () => {
     router.push("/register");
@@ -24,7 +15,24 @@ const Login = () => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
-    context?.login(event.target.email.value, event.target.password.value);
+
+    const res = await fetch("/api/login", {
+      method: "POST",
+      body: JSON.stringify({
+        email: event.target.email.value,
+        password: event.target.password.value,
+      }),
+      headers: {
+        "Content-Type": "application/json",
+      },
+    })
+
+    const { success } = await res.json();
+    if (success) {
+      router.push("/home");
+    } else {
+      alert('ERROR')
+    }
   }
 
   return (

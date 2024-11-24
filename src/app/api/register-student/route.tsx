@@ -1,14 +1,22 @@
+import { getBaseURL } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
-    // TODO: Implement Register Call w/ parameters
+    
     try {
         const body = await request.json();
-        const res = await fetch("http://localhost:8000/auth/register", {
+        const res = await fetch(`${getBaseURL()}/student-user`, {
             method: "POST",
             body: JSON.stringify({
+                Name: body.name,
+                LastName: body.last_name,
+                Password: body.password,
                 email: body.email,
-                password: body.password,
+                UserProfile: {
+                    Institute: body.university,
+                    Carrer: body.career,
+                    Ciclo: body.ciclo
+                }
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -19,18 +27,10 @@ export async function POST(request: Request) {
             return NextResponse.json({ success: false });
         }
     
-        const { token } = await res.json();
         const response = NextResponse.json(
             { success: true },
             { status: 200, headers: { "content-type": "application/json" } }
         );
-
-        response.cookies.set({
-            name: "token",
-            value: token,
-            path: "/",
-            httpOnly: true,
-        });
 
         return response;
     } catch (error) {

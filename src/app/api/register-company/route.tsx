@@ -2,13 +2,21 @@ import { getBaseURL } from "@/lib/utils";
 import { NextResponse } from "next/server";
 
 export async function POST(request: Request) {
+
     try {
         const body = await request.json();
-        const res = await fetch(`${getBaseURL()}/auth/login`, {
+        const res = await fetch(`${getBaseURL()}/company-user`, {
             method: "POST",
             body: JSON.stringify({
+                Username: body.company,
+                Password: body.password,
                 email: body.email,
-                password: body.password,
+                CompanyPerfil: {
+                    Sunac: body.ruc,
+                    IndustrySector: body.type,
+                    PhoneNumber: body.phone,
+                    Address: body.address,
+                }
             }),
             headers: {
                 "Content-Type": "application/json",
@@ -19,18 +27,10 @@ export async function POST(request: Request) {
             return NextResponse.json({ success: false });
         }
     
-        const { token } = await res.json();
         const response = NextResponse.json(
             { success: true },
             { status: 200, headers: { "content-type": "application/json" } }
         );
-
-        response.cookies.set({
-            name: "token",
-            value: token,
-            path: "/",
-            httpOnly: true,
-        });
 
         return response;
     } catch (error) {

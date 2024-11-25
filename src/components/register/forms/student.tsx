@@ -63,6 +63,11 @@ const StudentForm = () => {
         setPage(2);
     }
 
+    const handlePrevious = (event: any) => {
+        event.preventDefault();
+        setPage(1);
+    }
+
     const handleSubmit = async (event: any) => {
         event.preventDefault();
         setLoading(true);
@@ -75,12 +80,13 @@ const StudentForm = () => {
             },
           })
       
-          const { success } = await res.json();
+          const { success, message } = await res.json();
           if (success) {
             router.push("/login");
             setLoading(false);
           } else {
-            alert('ERROR')
+            alert(message)
+            setLoading(false);
           }
     }
 
@@ -153,7 +159,10 @@ const StudentForm = () => {
                     </div>
                     {msg ? <p className="text-sm justify-center">{msg}</p> : ""}
                     {loading ? <Spinner /> : <Button className="w-full" onClick={handleSubmit}>Registrarse</Button>}
-                    <button className="mx-auto w-fit text-sm hover:underline" onClick={login}>Login</button>
+                    <div className="flex mx-auto w-fit text-sm gap-5">
+                        <button className="hover:underline" onClick={handlePrevious}>Volver</button>
+                        <button className="hover:underline" onClick={login}>Login</button>
+                    </div>
                 </div>
             }
         </div>

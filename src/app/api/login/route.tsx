@@ -16,7 +16,8 @@ export async function POST(request: Request) {
         });
     
         if(!res.ok) {
-            return NextResponse.json({ success: false });
+            const { message } = await res.json()
+            return NextResponse.json({ success: false, message: message });
         }
     
         const { token } = await res.json();
@@ -33,7 +34,7 @@ export async function POST(request: Request) {
         });
 
         return response;
-    } catch (error) {
-        return NextResponse.json({ success: false });
+    } catch (error: any) {
+        return NextResponse.json({ success: false, message: error.message });
     }
 }

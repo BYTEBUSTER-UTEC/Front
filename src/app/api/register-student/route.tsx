@@ -14,17 +14,19 @@ export async function POST(request: Request) {
                 email: body.email,
                 UserProfile: {
                     Institute: body.university,
-                    Carrer: body.career,
-                    Ciclo: body.ciclo
+                    Career: body.career,
+                    Cycle: body.ciclo,
+                    Description: 'Soy nuev@ en la plataforma!'
                 }
             }),
             headers: {
                 "Content-Type": "application/json",
             },
         });
-    
+
         if(!res.ok) {
-            return NextResponse.json({ success: false });
+            const { message } = await res.json()
+            return NextResponse.json({ success: false, message: message });
         }
     
         const response = NextResponse.json(
@@ -33,7 +35,7 @@ export async function POST(request: Request) {
         );
 
         return response;
-    } catch (error) {
-        return NextResponse.json({ success: false });
+    } catch (error: any) {
+        return NextResponse.json({ success: false, message: error.message });
     }
 }

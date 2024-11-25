@@ -15,6 +15,7 @@ const Login = () => {
 
   const handleSubmit = async (event: any) => {
     event.preventDefault();
+    setLoading(true);
 
     const res = await fetch("/api/login", {
       method: "POST",
@@ -27,11 +28,13 @@ const Login = () => {
       },
     })
 
-    const { success } = await res.json();
+    const { success, message } = await res.json();
     if (success) {
       router.push("/home");
+      setLoading(false);
     } else {
-      alert('ERROR')
+      alert(message)
+      setLoading(false);
     }
   }
 

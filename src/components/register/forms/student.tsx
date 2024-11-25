@@ -67,18 +67,22 @@ const StudentForm = () => {
         event.preventDefault();
         setLoading(true);
 
-        //ToDo: API Call
-        await timeout(1000); // SIMULATING API CALL
-        setMessage("Usuario creado exitosamente. Redirigiendo...");
-        await timeout(3000); // SIMULATING API CALL
-        router.push("/login");
+        const res = await fetch("/api/register-student", {
+            method: "POST",
+            body: JSON.stringify(data),
+            headers: {
+              "Content-Type": "application/json",
+            },
+          })
+      
+          const { success } = await res.json();
+          if (success) {
+            router.push("/login");
+            setLoading(false);
+          } else {
+            alert('ERROR')
+          }
     }
-
-    // UTIL FUNCTION (SIM. ONLY)
-    function timeout(delay: number) {
-        return new Promise(res => setTimeout(res, delay));
-    }
-    // UTIL FUNCTION (SIM. ONLY)
 
     const handleChange = (event: any) => {
         setData({

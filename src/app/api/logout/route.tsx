@@ -1,7 +1,7 @@
 import { NextResponse } from "next/server";
 import { cookies } from "next/headers";
 
-export async function POST() {
+export async function GET() {
     try {
         cookies().delete("token");
         console.log("Logged out");

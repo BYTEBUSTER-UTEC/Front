@@ -20,7 +20,7 @@ export async function POST(request: Request) {
             return NextResponse.json({ success: false, message: message });
         }
     
-        const { token } = await res.json();
+        const { access_token } = await res.json();
         const response = NextResponse.json(
             { success: true },
             { status: 200, headers: { "content-type": "application/json" } }
@@ -28,7 +28,7 @@ export async function POST(request: Request) {
 
         response.cookies.set({
             name: "token",
-            value: token,
+            value: access_token,
             path: "/",
             httpOnly: true,
         });

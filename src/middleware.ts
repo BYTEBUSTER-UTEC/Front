@@ -2,7 +2,7 @@ import { NextResponse } from "next/server";
 import { NextRequest } from "next/server";
 import { verifyJwtToken } from "@/lib/auth";
 
-const AUTH_PAGES = ["/login", "/register"];
+const AUTH_PAGES = ["/login", "/register", '/integrations'];
 
 const isAuthPages = (url: string) => AUTH_PAGES.some((page) => url.startsWith(page));
 

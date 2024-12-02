@@ -1,7 +1,8 @@
 import { Spinner } from "@/commons/spinner";
 import { Button } from "@/components/ui/button";
+import { sendGitHubOAuth } from "@/lib/utils";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 
 const StudentForm = () => {
@@ -43,7 +44,7 @@ const StudentForm = () => {
         "Sociología",
         "Veterinaria"
     ]
-
+    const githubUsername = "";
     const [data, setData] = useState({
         name: "",
         last_name: "",
@@ -148,11 +149,11 @@ const StudentForm = () => {
                         </span>
                     </form>
                     <div className="flex flex-col gap-2 mt-8">
-                        <button className="flex flex-row justify-between text-sm font-bold p-2 px-5 rounded-lg w-full bg-white border text-[#B1B1B1] items-center">
-                            Vincular con GitHub
+                        <button className="flex flex-row justify-between text-sm font-bold p-2 px-5 rounded-lg w-full bg-white border text-[#B1B1B1] items-center hover:text-[#6e6e6e]" onClick={() => sendGitHubOAuth()} disabled={githubUsername != ''}>
+                            {githubUsername != '' ? 'Vinculado: ' + githubUsername :'Vincular con GitHub'}
                             <FaGithub className="w-[25px] h-[25px]" />
                         </button>
-                        <button className="flex flex-row justify-between text-sm font-bold p-2 px-5 rounded-lg w-full bg-white border text-[#B1B1B1] items-center">
+                        <button className="flex flex-row justify-between text-sm font-bold p-2 px-5 rounded-lg w-full bg-white border text-[#B1B1B1] items-center" disabled={true}>
                             Vincular con LinkedIn
                             <FaLinkedin className="w-[25px] h-[25px]" />
                         </button>

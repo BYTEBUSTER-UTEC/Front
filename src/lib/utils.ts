@@ -10,3 +10,12 @@ export function getBaseURL() {
 
   return url;
 }
+
+export function sendGitHubOAuth() {
+  const client_id = process.env.NEXT_PUBLIC_GITHUB_CLIENT_ID;
+
+  if (!client_id) {
+      return;
+  }
+  window.open(`https://github.com/login/oauth/authorize?client_id=${client_id}&scope=read:user&redirect_uri=${window.location.origin}/integrations/github/callback`, '_blank');
+}

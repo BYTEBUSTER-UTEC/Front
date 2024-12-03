@@ -2,13 +2,11 @@
 
 import { useEffect, useState } from "react";
 import { useSearchParams } from "next/navigation";
-import { useDispatch } from "react-redux";
 import { useRouter } from "next/navigation";
 
 const GitHubCallbackPage = () => {
   const searchParams = useSearchParams();
   const [loading, setLoading] = useState<boolean>(true);
-  const dispatch = useDispatch();
   const router = useRouter();
 
   useEffect(() => {
@@ -46,7 +44,7 @@ const GitHubCallbackPage = () => {
         const userData = await userRes.json();
         const username = userData.login;
 
-        // ToDo: SET STORE DISPATCH HERE
+        localStorage.setItem("register_github_username", username);
         setLoading(false);
       } catch (error) {
         console.error("Error during GitHub OAuth:", error);

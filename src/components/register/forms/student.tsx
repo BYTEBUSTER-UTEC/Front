@@ -3,7 +3,7 @@ import { Button } from "@/components/ui/button";
 import { sendGitHubOAuth } from "@/lib/utils";
 import { useRouter } from "next/navigation";
 import { useEffect, useState } from "react";
-import { FaGithub, FaLinkedin } from "react-icons/fa";
+import { FaGithub, FaLinkedin, FaUnlink } from "react-icons/fa";
 
 const StudentForm = () => {
     const router = useRouter();
@@ -44,7 +44,7 @@ const StudentForm = () => {
         "Sociología",
         "Veterinaria"
     ]
-    const githubUsername = "";
+    const [githubUsername, setGithubUsername] = useState<string>("");
     const [data, setData] = useState({
         name: "",
         last_name: "",
@@ -52,8 +52,41 @@ const StudentForm = () => {
         password: "",
         university: "",
         career: "",
-        ciclo: 1
+        ciclo: 1,
+        githubUsername: ""
     });
+
+    useEffect(() => {
+        const storedUsername = localStorage.getItem("register_github_username") || "";
+        setGithubUsername(storedUsername);
+        setData({
+            ...data,
+            githubUsername: storedUsername,
+        });
+
+        const handleStorageChange = () => {
+            const updatedUsername = localStorage.getItem("register_github_username") || "";
+            setGithubUsername(updatedUsername);
+            setData({
+                ...data,
+                githubUsername: updatedUsername,
+            });
+        };
+
+        window.addEventListener("storage", handleStorageChange);
+        return () => {
+            window.removeEventListener("storage", handleStorageChange);
+        };
+    }, []);
+
+    const resetGithubUsername = () => {
+        localStorage.removeItem("register_github_username");
+        setGithubUsername('');
+        setData({
+            ...data,
+            githubUsername: '',
+        });
+    }
 
     const login = () => {
         router.push("/login");
@@ -77,18 +110,20 @@ const StudentForm = () => {
             method: "POST",
             body: JSON.stringify(data),
             headers: {
-              "Content-Type": "application/json",
+                "Content-Type": "application/json",
             },
-          })
-      
-          const { success, message } = await res.json();
-          if (success) {
+        })
+
+        const { success, message } = await res.json();
+        if (success) {
+            localStorage.removeItem("register_github_username");
             router.push("/login");
             setLoading(false);
-          } else {
+        } else {
             alert(message)
+            localStorage.removeItem("register_github_username");
             setLoading(false);
-          }
+        }
     }
 
     const handleChange = (event: any) => {
@@ -149,10 +184,18 @@ const StudentForm = () => {
                         </span>
                     </form>
                     <div className="flex flex-col gap-2 mt-8">
-                        <button className="flex flex-row justify-between text-sm font-bold p-2 px-5 rounded-lg w-full bg-white border text-[#B1B1B1] items-center hover:text-[#6e6e6e]" onClick={() => sendGitHubOAuth()} disabled={githubUsername != ''}>
-                            {githubUsername != '' ? 'Vinculado: ' + githubUsername :'Vincular con GitHub'}
-                            <FaGithub className="w-[25px] h-[25px]" />
-                        </button>
+                        <div className="flex flex-row gap-2">
+                            <button className="flex flex-row justify-between text-sm font-bold p-2 px-5 rounded-lg w-full bg-white border text-[#B1B1B1] items-center hover:text-[#6e6e6e]" onClick={() => sendGitHubOAuth()} disabled={githubUsername != ''}>
+                                {githubUsername != '' ? 'Vinculado: ' + githubUsername : 'Vincular con GitHub'}
+                                <FaGithub className="w-[25px] h-[25px]" />
+                            </button >
+                            {githubUsername != '' && 
+                            <button className="flex flex-row w-12 text-sm font-bold p-2 border rounded-lg bg-white text-[#B1B1B1] items-center hover:text-[#6e6e6e]" onClick={resetGithubUsername}>
+                                <span className="flex mx-auto items-center">
+                                    <FaUnlink className="w-[12px] h-[12px]" />
+                                </span>
+                            </button>}
+                        </div>
                         <button className="flex flex-row justify-between text-sm font-bold p-2 px-5 rounded-lg w-full bg-white border text-[#B1B1B1] items-center" disabled={true}>
                             Vincular con LinkedIn
                             <FaLinkedin className="w-[25px] h-[25px]" />

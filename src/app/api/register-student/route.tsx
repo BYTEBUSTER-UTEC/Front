@@ -14,9 +14,10 @@ export async function POST(request: Request) {
                 email: body.email,
                 UserProfile: {
                     Institute: body.university,
+                    Description: 'Soy nuev@ en la plataforma!',
+                    GitHub: body.githubUsername,
                     Career: body.career,
                     Cycle: body.ciclo,
-                    Description: 'Soy nuev@ en la plataforma!'
                 }
             }),
             headers: {

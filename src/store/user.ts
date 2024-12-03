@@ -7,6 +7,10 @@ export const setProfileImage = createAction<{
   profileImageUrl: string;
 }>("SET-PROFILE-IMAGE");
 
+export const setGithubUsername = createAction<{
+  githubUserName: string;
+}>("SET-GITHUB-USERNAME");
+
 export const clear = createAction<null>("CLEAR");
 
 const initialState: UserState = {
@@ -30,6 +34,9 @@ const userReducer = createReducer(initialState, (builder) => {
   });
   builder.addCase(clear, () => {//Lo anterior
     return { ...initialState };
+  });
+  builder.addCase(setGithubUsername, (state, action) => {
+    return { ...state, ...action.payload };
   });
 });
 

@@ -11,8 +11,13 @@ export default function Page() {
   );
   console.log(user)
   return ( 
-    <main>
-      <Person />  
+    <main className="w-full overflow-y-auto max-h-screen">
+      <div>
+       <Person/> 
+       </div>
+       <div className="h-20">
+        
+       </div>
     </main>
   );
 }

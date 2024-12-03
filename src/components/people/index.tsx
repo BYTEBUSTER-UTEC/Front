@@ -3,8 +3,9 @@ import { PeopleCard } from "./card_info";
 import { SearchBar } from "@/commons/searchbar";
 import React, { useEffect, useState } from "react";
 import axios from "axios";
+import { getBaseURL } from "@/lib/utils";
 
-const base_url = "http://localhost:3000/student-user"
+const base_url = `${getBaseURL()}/student-user`
 
 interface UserProfile {
   Institute: string;

@@ -10,6 +10,11 @@ import { FaUserCircle } from "react-icons/fa";
 import { getBaseURL } from "@/lib/utils";
 import { Textarea } from "@/components/ui/textarea";
 
+//Redux 
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { UserState } from "@/types/userTypes";
+
 //Para el dialogo: 
 //para formulario: 
 import {
@@ -65,8 +70,7 @@ interface Post {
 const base_url_comentarios = `${getBaseURL()}/postuser/FindCommentsByPostUser`;
 const base_url_postComentario = `${getBaseURL()}/comentario`;
 const base_url_reaction = `${getBaseURL()}/reaction`;
-localStorage.setItem('userId', '1'); //--user
-const id_estudiante = localStorage.getItem('userId'); 
+//ID
 
 
 //Teimpo
@@ -85,11 +89,11 @@ const calcularTiempoPasado = (publicationDate: string): string => {
   }
 }
 //Para like y dislike
-const onLike =async (post_id: BigInteger) => {
+const onLike =async (post_id: BigInteger, userID:String) => {
   const body = {
     TypeReaction: "like",
     PostId: post_id,
-    StudentId: Number(id_estudiante)
+    StudentId: Number(userID)
   };
 
   try {
@@ -113,11 +117,11 @@ const onLike =async (post_id: BigInteger) => {
   
 };
 
-const onDisLike = async (post_id: BigInteger) => {
+const onDisLike = async (post_id: BigInteger, userID:String) => {
   const body = {
     TypeReaction: "dislike",
     PostId: post_id,
-    StudentId: Number(id_estudiante)     //--dtudent
+    StudentId: Number(userID)     //--dtudent
   };
 
   try {
@@ -144,6 +148,7 @@ const onDisLike = async (post_id: BigInteger) => {
 
   
 export const PostCard = ({ info,  post_id  }: 
+  
   { info: Post,  post_id:BigInteger }) => {
     const [seeComments, setSeeComments] = useState(false); 
     const [comentarios, setComentarios] = useState<Commentario[]>([]); 
@@ -158,11 +163,19 @@ export const PostCard = ({ info,  post_id  }:
     //Para los likes: 
     const [likeButtonText, setLikeButtonText] = useState("Me gusta");
     const [dislikeButtonText, setDislikeButtonText] = useState("No me gusta");
-    const onLike = async (post_id: BigInteger, setLikeButtonText: React.Dispatch<React.SetStateAction<string>>) => {
+    // Redux
+    const user: UserState = useSelector<RootState, UserState>(
+    (state) => state.user
+    ); //ID
+    console.log("user: ", user.id)
+
+
+
+    const onLike = async (post_id: BigInteger, userID:Number, setLikeButtonText: React.Dispatch<React.SetStateAction<string>>) => {
       const body = {
         TypeReaction: "like",
         PostId: post_id,
-        StudentId: Number(id_estudiante)
+        StudentId: Number(userID)
       };
       
       setLikeButtonText("Cargando...");
@@ -193,11 +206,11 @@ export const PostCard = ({ info,  post_id  }:
       }
     };
     
-    const onDisLike = async (post_id: BigInteger, setDislikeButtonText: React.Dispatch<React.SetStateAction<string>>) => {
+    const onDisLike = async (post_id: BigInteger, userID:Number,setDislikeButtonText: React.Dispatch<React.SetStateAction<string>>) => {
       const body = {
         TypeReaction: "dislike",
         PostId: post_id,
-        StudentId: Number(id_estudiante)     //--dtudent
+        StudentId: Number(userID)     //--dtudent
       };
     
       setDislikeButtonText("Cargando...");
@@ -250,14 +263,14 @@ export const PostCard = ({ info,  post_id  }:
     const postComentario = async () => {
       
     
-      if (!id_estudiante) {
+      if (!user.id) {
         console.error("El ID del estudiante no está disponible.");
         return;
       }
     
       const comentarioData = {
         ComentarioUser: nuevoComentario,
-        StudentId: parseInt(id_estudiante),
+        StudentId: user.id,
         PostId: info.id,
       };
       setLoadingComentario(true); 
@@ -319,13 +332,13 @@ export const PostCard = ({ info,  post_id  }:
       </div>
       {/* buttons */}
       <div className="flex gap-5 mt-6 items-center justify-center">
-        <Button className="w-60 flex gap-3  overflow-hidden justify-center" onClick={() => onLike(post_id, setLikeButtonText)} >
+        <Button className="w-60 flex gap-3  overflow-hidden justify-center" onClick={() => onLike(post_id, user.id, setLikeButtonText)} >
         {likeButtonText} 
           <AiOutlineLike  className="h-5 w-5"/>
         </Button>
         <Button
           variant="outline"
-         className="w-60 flex items-center justify-center overflow-hidden" onClick={() => onDisLike(post_id, setDislikeButtonText)} >
+         className="w-60 flex items-center justify-center overflow-hidden" onClick={() => onDisLike(post_id, user.id, setDislikeButtonText)} >
             <p className="mr-2">{dislikeButtonText}</p> 
             <AiOutlineDislike className="h-5 w-5" />
         </Button>

@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import { Button } from "@/components/ui/button";
 import { PostCard } from "./post_card";
 import { getBaseURL } from "@/lib/utils";
@@ -24,12 +24,18 @@ import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import axios from "axios";
 import { Textarea } from "../ui/textarea";
+// Redux
+  import { useSelector } from "react-redux";
+  import { RootState } from "@/store/store";
+  import { UserState } from "@/types/userTypes";
+
 
 const base_url_student = `${getBaseURL()}/student-user/`;
 const base_url = `${getBaseURL()}/postuser`;
 const base_url_PostUser = `${getBaseURL()}/postuser`;
-localStorage.setItem('userId', '1'); //--user
-const id_user = localStorage.getItem('userId');
+// localStorage.setItem('userId', '1'); //--user
+
+// const id_user = localStorage.getItem('userId');
 
 //Mostrar más info 
 interface PersonInfo {
@@ -72,6 +78,12 @@ export const Posts: React.FC = () => {
   const [isPosting, setIsPosting] = useState(false);
   const [successMessage, setSuccessMessage] = useState("");
   
+  // Redux
+  const user: UserState = useSelector<RootState, UserState>(
+    (state) => state.user
+  ); //ID
+  console.log("user: ", user.id)
+
   //File
   const [file, setFile] = useState<File | null>(null);
   const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -82,7 +94,7 @@ export const Posts: React.FC = () => {
 
   
   const postPostUser = async () => {
-    if (!id_user) {
+    if (!user.id) {
       console.error("El ID del usuario no está disponible.");
       return;
     }
@@ -96,7 +108,7 @@ export const Posts: React.FC = () => {
       TituloPost: nuevoTitulo,
       Descripcion: nuevaDescripcion,
       ImgPostUrl: imageURL,
-      StudentId: parseInt(id_user),
+      StudentId: user.id,
     };
   
     setIsPosting(true); 
@@ -184,8 +196,6 @@ export const Posts: React.FC = () => {
       Agregar un post
     </Button>
   </DialogTrigger>
-        
-
         <DialogContent className="overflow-y-auto max-h-screen sm:max-w-[825px] flex flex-col items-center justify-center">
           <DialogHeader className="text-center">
             <DialogTitle>Crear un post</DialogTitle>

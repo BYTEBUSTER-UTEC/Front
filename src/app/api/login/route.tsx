@@ -31,6 +31,7 @@ export async function POST(request: Request) {
             value: access_token,
             path: "/",
             httpOnly: true,
+            maxAge: 60 * 60 * 24 * 7,
         });
 
         return response;

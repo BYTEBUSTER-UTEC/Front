@@ -1,11 +1,18 @@
+"use client";
+
 import React from "react";
-import UserProfile from "@/components/user/user";
-
-
+import { Person } from "@/components/user";
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { UserState } from "@/types/userTypes";
 export default function Page() {
-  return (
+  const user: UserState = useSelector<RootState, UserState>(
+    (state) => state.user
+  );
+  console.log(user)
+  return ( 
     <main>
-      <UserProfile />
+      <Person />  
     </main>
   );
 }

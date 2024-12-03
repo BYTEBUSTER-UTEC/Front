@@ -3,6 +3,7 @@
 import { AppLogo } from "@/commons/logo";
 import { usePathname, useRouter } from "next/navigation";
 import React, { MouseEvent } from "react";
+import { FaUserCircle } from "react-icons/fa";
 
 const links = [
   { href: "/home", label: "Inicio" },
@@ -40,7 +41,18 @@ export const Navbar: React.FC = () => {
         ))}
       </div>
       <div className="max-w-[25%] w-full flex justify-end items-center h-full p-2">
-        settings
+      <a
+            href="/profile"
+            onClick={(e) => goTo(e, "/profile")}
+            className={`cursor-default hover:text-black transition-colors duration-300 ${
+              pathname.includes("/profile") ? "text-black font-bold" : ""
+            }`}
+      >
+        <FaUserCircle className="w-[35px] h-[35px]" />
+      </a>
+        
+        
+
       </div>
     </div>
   );

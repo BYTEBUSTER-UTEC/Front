@@ -21,11 +21,8 @@ export async function POST(request: Request) {
         }
     
         const { access_token, type, data } = await res.json();
-
-        //GUARDAR AQUI TYPE Y DATA A REDUX
-
         const response = NextResponse.json(
-            { success: true },
+            { success: true, message: 'Success', type, data },
             { status: 200, headers: { "content-type": "application/json" } }
         );
 

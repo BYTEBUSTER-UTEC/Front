@@ -2,12 +2,15 @@
 import { AppLogo } from "@/commons/logo";
 import { Spinner } from "@/commons/spinner";
 import { Button } from "@/components/ui/button";
+import { set } from "@/store/user";
 import { useRouter, useSearchParams } from "next/navigation";
 import React, { useEffect, useState, useContext } from "react";
+import { useDispatch } from "react-redux";
 
 const Login = () => {
   const router = useRouter();
   const [loading, setLoading] = useState<boolean>(false);
+  const dispatch = useDispatch();
 
   const register = () => {
     router.push("/register");
@@ -28,8 +31,20 @@ const Login = () => {
       },
     })
 
-    const { success, message } = await res.json();
+    const { success, message, type, data } = await res.json();
     if (success) {
+
+      dispatch(set({
+          id: data.id,
+          name: data.Name,
+          surname: data.LastName,
+          email: data.email,
+          isAdmin: false,
+          type: type,
+          slug: `${data.Name.toLowerCase()}-${data.LastName.toLowerCase()}`,
+          profileImageUrl: "",
+      }));
+
       router.push("/home");
       setLoading(false);
     } else {

@@ -1,6 +1,5 @@
 "use client";
 
-import { UserComment } from "./comment";
 import { Spinner } from "@/commons/spinner";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
@@ -163,9 +162,9 @@ export const CompanyProfile =
           <div className="w-full bg-[#f7f5ed] rounded-xl p-4 pr-6 pl-6 mt-2">
             <h5>Testimonios ex-practicantes</h5>
           </div>
-          {users_test_info.map((comment, i) => {
+          {/* {users_test_info.map((comment, i) => {
             return <UserComment key={i} info={comment} />;
-          })}
+          })} */}
         </div>
       );
   };

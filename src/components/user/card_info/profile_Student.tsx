@@ -49,7 +49,6 @@ interface PersonInfo {
 export const PersonCard = ({ info }: { info: PersonInfo | undefined }) => {
   const dispatch = useDispatch();
   
-  if (!info) return <p>No data available</p>; 
   //-------------------------------
   const [updatedInfo, setUpdatedInfo] = useState(info); 
   const [infoUse, setUpdatedInfoUse] = useState(info); 

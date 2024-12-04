@@ -26,14 +26,12 @@ interface PersonInfo {
 }
 
 export const CompanyCard = ({ info }: { info: PersonInfo | undefined }) => {
-  if (!info) return <p>No data available</p>;
-
   const [followers, setFollowers] = useState<any[]>([]);
   const [lenFollowers, setLenFollowers] = useState<number>(0);
   const [loadingLen, setLoadingLen] = useState<boolean>(false);
   
   const user: UserState = useSelector<RootState, UserState>((state) => state.user);
-
+  
   useEffect(() => {
     const fetchFollowers = async () => {
       setLoadingLen(true);

@@ -33,8 +33,8 @@ const Login = () => {
 
     const { success, message, type, data } = await res.json();
     if (success) {
-
-      dispatch(set({
+      if (type === "student") {
+        dispatch(set({
           id: data.id,
           name: data.Name,
           surname: data.LastName,
@@ -42,9 +42,20 @@ const Login = () => {
           isAdmin: false,
           type: type,
           slug: `${data.Name.toLowerCase()}-${data.LastName.toLowerCase()}`,
-          profileImageUrl: "",
-      }));
-
+          profileImageUrl: data.UserProfile.imageURL || '',
+        }));
+      } else if (type === "company") {
+        dispatch(set({
+          id: data.id,
+          name: data.Username,
+          surname: '',
+          email: data.email,
+          isAdmin: false,
+          type: type,
+          slug: '',
+          profileImageUrl: data.CompanyPerfil.imageURL || '',
+        }));
+      }
       router.push("/home");
       setLoading(false);
     } else {

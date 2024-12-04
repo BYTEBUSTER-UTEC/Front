@@ -1,5 +1,4 @@
 "use client";
-import { PersonCard } from "./card_info/profile_Student";
 import { SearchBar } from "@/commons/searchbar";
 import React, { useEffect, useState } from "react";
 import { getBaseURL } from "@/lib/utils";
@@ -7,36 +6,36 @@ import axios from "axios";
 import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { UserState } from "@/types/userTypes";
+import { CompanyCard } from "./companyProfile";
 //Relevant information in localstorage
-const base_url = `${getBaseURL()}/student-user`;
+const base_url = `${getBaseURL()}/company-user`;
 
 //Local storage
 
 
 //End
 
-interface UserProfile {
-  Institute: string;
-  GitHub: string;
-  Linkedin: string;
-  imageURL: string;
-  PhoneNumber: string;
-  Description: string;
-  studentUserId: number;
-}
-
-interface PersonInfo {
-  id: number;
-  Name: string;
-  LastName: string;
-  email: string;
-  Password: string;
-  UserProfile: UserProfile; 
-}
-//Guardamos el id del --user: 
-
+interface CompanyProfile {
+    Sunac: string;
+    GitHub: string;
+    IndustrySector: string;
+    imageURL: string;
+    PhoneNumber: string;
+    Description: string;
+    Address: string;
+    CompanyUserId: number;
+  }
+  
+  interface PersonInfo {
+    id: number;
+    Username: string;
+    email: string;
+    Password: string;
+    CompanyPerfil: CompanyProfile; 
+  }
+  
 //-----------important
-export const Person = () => {
+export const CompanyData = () => {
   const [personInfo, setPersonInfo] =  useState<PersonInfo | undefined>(undefined); // Permitir undeCambiar a un solo objeto en lugar de un array
   const [loading, setLoading] = useState<boolean>(true);
   const [error, setError] = useState<string | null>(null);
@@ -64,14 +63,15 @@ export const Person = () => {
     };
 
     fetchPersonData();
-  }, []);
+  }, [user.id]);
 
   if (loading) return <p>Cargando...</p>;
   if (error) return <p>Error: {error}</p>;
+  if (!personInfo) return <p>No se encontró la información.</p>;
 
   return (
     <div className="w-full rounded-xl">
-      <PersonCard info={personInfo} />
+      <CompanyCard info={personInfo} />
     </div>
   );
 };

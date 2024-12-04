@@ -1,6 +1,6 @@
 // app/people/[studentUserId]/page.tsx
 
-import { OtherPersonCard } from "./card_info";
+import { OtherPersonCard } from "./card_info/otherPersonCard_Sudent";
 import React, { useEffect, useState } from "react";
 import { getBaseURL } from "@/lib/utils";
 import axios from "axios";
@@ -55,7 +55,7 @@ export default function OtherProfile({ params }: { params: { studentUserId: stri
 
   return (
     <div className="w-full rounded-xl">
-      {personInfo && <OtherPersonCard info={personInfo} />}
+      {personInfo && <OtherPersonCard info={personInfo} id_user={params.studentUserId} />}
     </div>
   );
 }

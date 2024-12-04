@@ -23,7 +23,7 @@ interface PersonInfo {
   LastName: string;
   email: string;
   Password: string;
-  UserProfile: UserProfile; 
+  UserProfile?: UserProfile; 
 }
 
 

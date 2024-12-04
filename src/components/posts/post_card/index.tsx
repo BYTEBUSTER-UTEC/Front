@@ -192,8 +192,8 @@ export const PostCard = ({ info,  post_id  }:
       }
     };
     
-    const onDisLike = async (post_id: BigInteger, userID:Number,setDislikeButtonText: React.Dispatch<React.SetStateAction<string>>) => {
-      let body: any = {
+    const onDisLike = async (post_id: BigInteger, userID: number,setDislikeButtonText: React.Dispatch<React.SetStateAction<string>>) => {
+      const body: any = {
         TypeReaction: "dislike",
         PostId: post_id,
       };
@@ -257,7 +257,7 @@ export const PostCard = ({ info,  post_id  }:
         return;
       }
 
-      let comentarioData:any = {
+      const comentarioData:any = {
         ComentarioUser: nuevoComentario,
         PostId: info.id,
       };

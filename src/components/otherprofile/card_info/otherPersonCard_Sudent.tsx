@@ -30,7 +30,6 @@ const base_url_seguidores = `${getBaseURL()}/student-profile/followers`;
 
 
 export const OtherPersonCard = ({ info, id_user }: { info: PersonInfo | undefined, id_user:any}) => {
-  if (!info) return <p>No data available</p>; 
   //-------------------------------
   const [infoUse, setUpdatedInfoUse] = useState(info); 
   const [isFollowing, setIsFollowing] = useState(false);

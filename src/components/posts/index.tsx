@@ -86,9 +86,6 @@ interface PersonInfo {
   UserProfile?: UserProfile;
 }
 
-
-
-
 export const Posts: React.FC = () => {
   const [posts, setPosts] = useState<Post[]>([]);
   const [loading, setLoading] = useState<boolean>(true); 
@@ -125,7 +122,7 @@ export const Posts: React.FC = () => {
       console.error("Faltan datos en el formulario.");
       return;
     }
-    let postData: any = {
+    const postData: any = {
       TituloPost: nuevoTitulo,
       Descripcion: nuevaDescripcion,
       ImgPostUrl: imageURL,
@@ -186,7 +183,7 @@ export const Posts: React.FC = () => {
   const fetchPosts = async () => {
     try {
       const response = await axios.get<Post[]>(base_url); 
-      let filteredPosts = response.data;
+      const filteredPosts = response.data;
   
       const postsWithInfo = await Promise.all(
         filteredPosts.map(async (post) => {

@@ -21,7 +21,7 @@
     LastName: string;
     email: string;
     Password: string;
-    UserProfile: UserProfile; 
+    UserProfile?: UserProfile; 
   }
 
 
@@ -75,12 +75,12 @@
             Ver
           </Button>
           &nbsp;&nbsp;
-          <Button
+          {/* <Button
             variant="outline"
             className="rounded-[12px] max-w-[100px] w-full"
           >
-            Chat
-          </Button>
+            Añadir
+          </Button> */}
         </div>
       </div>
     );

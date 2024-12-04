@@ -29,6 +29,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import axios from "axios";
+interface ComentarioCompany {
+  id: number;
+  IndustrySector: string;
+  imageURL: string;
+  CompanyName: string;
+  PublicationDate: string;
+  ComentarioUser: string;
+}
 interface ComentarioStudent {
   id: number;
   Institute: string;
@@ -39,33 +47,62 @@ interface ComentarioStudent {
 }
 
 interface Commentario {
-  ComentarioStudent: ComentarioStudent;
-}
-interface PersonInfo {
-  Name: string;
-  LastName: string;
-  email: string;
-  UserProfile: UserProfile;
+  ComentarioStudent?: ComentarioStudent;
+  ComentarioCompany?: ComentarioCompany;
 }
 
 interface UserProfile {
+  Institute: string;
+  GitHub: string;
+  Linkedin: string;
+  Career: string;
+  Cycle: number;
+  Description: string | null;
+  PhoneNumber: string;
+  imageURL: string;
+  studentUserId: number;
+}
+
+interface CompanyPerfil {
+  Address: string;
+  CompanyUserId: number;
+  Description: string;
+  GitHub: string;
+  IndustrySector: string;
+  PhoneNumber: string;
+  Sunac: string;
   imageURL: string;
 }
 
+interface ExtraInfo {
+  id: number;
+  Name: string;
+  Username: string;
+  LastName: string;
+  email: string;
+  UserProfile?: UserProfile;
+  CompanyPerfil?: CompanyPerfil;
+}
 
-
-
-// Definición de tipos para los datos provenientes de la API
 interface Post {
   id: BigInteger;
   PublicationDate: string;
   TituloPost: string;
   Descripcion: string;
   ImgPostUrl: string;
-  StudentId: BigInteger; 
+  StudentId?: number; 
+  CompanyId?: number; 
   PersonInfo: PersonInfo | null;
-  
+  extraInfo: ExtraInfo;
 }
+
+interface PersonInfo {
+  Name: string;
+  LastName: string;
+  UserProfile?: UserProfile;
+}
+
+
 
 const base_url_comentarios = `${getBaseURL()}/postuser/FindCommentsByPostUser`;
 const base_url_postComentario = `${getBaseURL()}/comentario`;
@@ -88,62 +125,7 @@ const calcularTiempoPasado = (publicationDate: string): string => {
     return "Hace más de 9 horas";
   }
 }
-//Para like y dislike
-const onLike =async (post_id: BigInteger, userID:String) => {
-  const body = {
-    TypeReaction: "like",
-    PostId: post_id,
-    StudentId: Number(userID)
-  };
 
-  try {
-    const response = await axios.post<string>(base_url_reaction, body, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.status === 200) {
-      console.log("Like añadido correctamente");
-      alert("¡Like añadido correctamente! ")
-    } else {
-      alert(`Operación completada con estado: ${response.status}`);
-    }
-
-    console.log("response", response)
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-  }
-
-  
-};
-
-const onDisLike = async (post_id: BigInteger, userID:String) => {
-  const body = {
-    TypeReaction: "dislike",
-    PostId: post_id,
-    StudentId: Number(userID)     //--dtudent
-  };
-
-  try {
-    const response = await axios.post<string>(base_url_reaction, body, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-    });
-    if (response.status === 200) {
-      console.log("Dislike añadido correctamente");
-      alert("Dislike añadido correctamente! 🎉")
-    } else {
-      alert(`Operación completada con estado: ${response.status}`);
-    }
-
-    console.log("response", response)
-  } catch (error) {
-    console.error("Error fetching posts:", error);
-  }
-
-  
-};
 
 
   
@@ -172,12 +154,16 @@ export const PostCard = ({ info,  post_id  }:
 
 
     const onLike = async (post_id: BigInteger, userID:Number, setLikeButtonText: React.Dispatch<React.SetStateAction<string>>) => {
-      const body = {
+      let body: any = {
         TypeReaction: "like",
         PostId: post_id,
-        StudentId: Number(userID)
       };
       
+      if (user.type === 'student') { // Para la validacion de empresa o compañia
+        body.StudentId = user.id; 
+      } else  {
+        body.CompanyId = user.id; 
+      } 
       setLikeButtonText("Cargando...");
     
       try {
@@ -207,12 +193,16 @@ export const PostCard = ({ info,  post_id  }:
     };
     
     const onDisLike = async (post_id: BigInteger, userID:Number,setDislikeButtonText: React.Dispatch<React.SetStateAction<string>>) => {
-      const body = {
+      let body: any = {
         TypeReaction: "dislike",
         PostId: post_id,
-        StudentId: Number(userID)     //--dtudent
       };
-    
+      
+      if (user.type === 'student') { // Para la validacion de empresa o compañia
+        body.StudentId = user.id; 
+      } else  {
+        body.CompanyId = user.id; 
+      } 
       setDislikeButtonText("Cargando...");
     
       try {
@@ -262,17 +252,23 @@ export const PostCard = ({ info,  post_id  }:
 
     const postComentario = async () => {
       
-    
       if (!user.id) {
         console.error("El ID del estudiante no está disponible.");
         return;
       }
-    
-      const comentarioData = {
+
+      let comentarioData:any = {
         ComentarioUser: nuevoComentario,
-        StudentId: user.id,
         PostId: info.id,
       };
+      console.log("post_id", info.id)
+      // Jugadita: 
+      if (user.type === 'student') { // Para la validacion de empresa o compañia
+        comentarioData.StudentId = user.id; 
+      } else  {
+        comentarioData.CompanyId = user.id; 
+      } 
+      
       setLoadingComentario(true); 
       setMensaje("Cargando...");
       try {
@@ -302,19 +298,38 @@ export const PostCard = ({ info,  post_id  }:
       {/* head */}
       <div className= "grid grid-cols-2" >
         <div className="flex gap-6">
+          
           <div className= "w-16 h-16 rounded-lg border-5 border-red bg-red overflow-hidden  ">
-            <img className=" object-cover" src={info.PersonInfo?.UserProfile.imageURL}></img>
+            {info.extraInfo && info.StudentId && (
+              <img src={info.extraInfo.UserProfile?.imageURL} alt="User Profile" />
+            )}
+            {info.extraInfo && info.CompanyId  && (
+              <img src={info.extraInfo.CompanyPerfil?.imageURL} alt="User Profile" />
+            )}
           </div>
           <div >
             <div className="flex gap-1 items-center ">
-              <h1 className="text-xl text-[#7E7A7A] ">{info.PersonInfo?.Name}</h1>
-              {/* {info.verified && (
-                <FaStar />
-              )} */}
+              {/* <h1 className="text-xl text-[#7E7A7A] ">{info.PersonInfo?.Name}</h1> */}
+              {info.extraInfo && info.StudentId && (
+              <h1>{info.extraInfo?.Name}  </h1>
+            )}
+            {info.extraInfo && info.CompanyId  && (
+              <h1>{info.extraInfo?.Username} </h1>
+            )}
             </div>
-            <p className="text-gray-500">{info.PersonInfo?.LastName}</p>
+            {info.extraInfo && info.StudentId && (
+              <p>{info.extraInfo?.LastName}  </p>
+            )}
+            {info.extraInfo && info.CompanyId  && (
+              <p>{info.extraInfo?.email} </p>
+            )}
+
+            {/* <p className="text-gray-500">{info.PersonInfo?.LastName}</p> */}
+
+
           </div>
         </div>
+
         <div className="flex">
           <p className="ml-auto">{calcularTiempoPasado(info.PublicationDate)}</p>
         </div>
@@ -392,25 +407,57 @@ export const PostCard = ({ info,  post_id  }:
                 </div>
                   <div className="bg-white mt-5 rounded-xl p-5">
                   {loadingComentarios ? (
-                    <p>Cargando...</p> 
-                  ) : comentarios.length > 0 ? (
-                    comentarios.map((comentario, index) => (
-                      <div key={index} className="mb-10">
-                        <div className="flex gap-4 items-center">
-                          <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
-                            <img src={comentario.ComentarioStudent.imageURL}/>
+                      <p>Cargando...</p>
+                    ) : Array.isArray(comentarios) && comentarios.length > 0 ? (
+                      comentarios.map((comentario, index) => (
+                        <div key={index} className="mb-10">
+                          <div className="flex gap-4 items-center">
+                            <div className="w-[50px] h-[50px] rounded-full overflow-hidden">
+                              {comentarios && comentario.ComentarioStudent && (
+                                <img src={comentario.ComentarioStudent.imageURL} />
+                              )}
+                              {comentarios && comentario.ComentarioCompany && (
+                                <img src={comentario.ComentarioCompany.imageURL} />
+                              )}
+                            </div>
+
+                            {comentarios && comentario.ComentarioStudent && (
+                                <h2 className="font-bold">{comentario.ComentarioStudent.UserName} </h2>
+                              )}
+                              {comentarios && comentario.ComentarioCompany && (
+                                <h2 className="font-bold">{comentario.ComentarioCompany.CompanyName} </h2>
+                              )}
+
+                          
+                            {comentarios && comentario.ComentarioStudent && (
+                                <p className="text-gray-500 text-sm">
+                                {calcularTiempoPasado(comentario.ComentarioStudent?.PublicationDate)}
+                              </p>
+                              )}
+                              {comentarios && comentario.ComentarioCompany && (
+                                <p className="text-gray-500 text-sm">
+                                {calcularTiempoPasado(comentario.ComentarioCompany?.PublicationDate)}
+                              </p>
+                              )}
+
                           </div>
-                          <h2 className="font-bold">{comentario.ComentarioStudent.UserName}</h2>
-                          <p className="text-gray-500 text-sm">{calcularTiempoPasado(comentario.ComentarioStudent.PublicationDate)}</p>
+                          <ul className="text-justify ml-8">
+
+
+                            {comentarios && comentario.ComentarioStudent && (
+                                <p>{comentario.ComentarioStudent?.ComentarioUser}</p>
+                              )}
+                              {comentarios && comentario.ComentarioCompany && (
+                                <p>{comentario.ComentarioCompany?.ComentarioUser}</p>
+                              )}
+
+                          </ul>
                         </div>
-                        <ul className="text-justify ml-8">
-                          <p>{comentario.ComentarioStudent.ComentarioUser}</p>
-                        </ul>
-                      </div>
-                    ))
-                  ) : (
-                    <p>No hay comentarios aún.</p> 
-                  )}
+                      ))
+                    ) : (
+                      <p>No hay comentarios aún.</p>
+                    )}
+
                 </div>
             </div>
           )}

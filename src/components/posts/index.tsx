@@ -31,39 +31,60 @@ import { Textarea } from "../ui/textarea";
 
 
 const base_url_student = `${getBaseURL()}/student-user/`;
+const base_url_company = `${getBaseURL()}/company-user/`;
 const base_url = `${getBaseURL()}/postuser`;
 const base_url_PostUser = `${getBaseURL()}/postuser`;
-// localStorage.setItem('userId', '1'); //--user
-
-// const id_user = localStorage.getItem('userId');
-
-//Mostrar más info 
-interface PersonInfo {
-  Name: string;
-  LastName: string;
-  email: string;
-  UserProfile: UserProfile;
-}
 
 interface UserProfile {
+  Institute: string;
+  GitHub: string;
+  Linkedin: string;
+  Career: string;
+  Cycle: number;
+  Description: string | null;
+  PhoneNumber: string;
+  imageURL: string;
+  studentUserId: number;
+}
+
+interface CompanyPerfil {
+  Address: string;
+  CompanyUserId: number;
+  Description: string;
+  GitHub: string;
+  IndustrySector: string;
+  PhoneNumber: string;
+  Sunac: string;
   imageURL: string;
 }
 
+interface ExtraInfo {
+  id: number;
+  Name: string;
+  Username: string;
+  LastName: string;
+  email: string;
+  UserProfile?: UserProfile;
+  CompanyPerfil?: CompanyPerfil;
+}
 
-
-// Definición de tipos para los datos provenientes de la API
 interface Post {
   id: BigInteger;
   PublicationDate: string;
   TituloPost: string;
   Descripcion: string;
   ImgPostUrl: string;
-  StudentId: BigInteger; 
+  StudentId?: number; 
+  CompanyId?: number; 
   PersonInfo: PersonInfo | null;
-  
+  extraInfo: ExtraInfo;
 }
 
-
+interface PersonInfo {
+  Name: string;
+  LastName: string;
+  UserProfile?: UserProfile;
+}
 
 
 
@@ -104,12 +125,17 @@ export const Posts: React.FC = () => {
       console.error("Faltan datos en el formulario.");
       return;
     }
-    const postData = {
+    let postData: any = {
       TituloPost: nuevoTitulo,
       Descripcion: nuevaDescripcion,
       ImgPostUrl: imageURL,
-      StudentId: user.id,
     };
+
+    if (user.type === 'student') { // Para la validacion de empresa o compañia
+      postData.StudentId = user.id; 
+    } else  {
+      postData.CompanyId = user.id; 
+    } 
   
     setIsPosting(true); 
     setSuccessMessage(""); 
@@ -135,7 +161,18 @@ export const Posts: React.FC = () => {
     }
   };
   
-  const fetchStudentInfo = async (studentId: BigInteger): Promise<PersonInfo | null> => {
+  const fetchCompanyInfo = async (companyId: number): Promise<CompanyPerfil  | null> => {
+    try {
+      const response = await axios.get<CompanyPerfil >(`${base_url_company}${companyId}`);
+      console.log("Compañia:",response.data)
+      return response.data;
+    } catch (error) {
+      console.error(`Error fetching company info for ID ${companyId}:`, error);
+      return null;
+    }
+  };
+
+  const fetchStudentInfo = async (studentId: number): Promise<PersonInfo | null> => {
     try {
       const response = await axios.get<PersonInfo>(`${base_url_student}${studentId}`);
       // console.log("La persona es", response.data)
@@ -148,23 +185,35 @@ export const Posts: React.FC = () => {
 
   const fetchPosts = async () => {
     try {
-      const response = await axios.get<Post[]>(base_url);
+      const response = await axios.get<Post[]>(base_url); 
+      let filteredPosts = response.data;
+  
       const postsWithInfo = await Promise.all(
-        response.data.map(async (post) => {
-          const personInfo = await fetchStudentInfo(post.StudentId);
-          return { ...post, PersonInfo: personInfo };
+        filteredPosts.map(async (post) => {
+          let extraInfo = null;
+  
+          if (post.StudentId) {
+            extraInfo = await fetchStudentInfo(post.StudentId);
+          }
+  
+          if (post.CompanyId) {
+            extraInfo = await fetchCompanyInfo(post.CompanyId); 
+          }
+  
+          return { ...post, extraInfo };
         })
       );
-      console.log("response", postsWithInfo)
+  
+      console.log("Posts con la información adicional: ", postsWithInfo);
       setPosts(postsWithInfo);
-      setLoading(false);
-      // fetchPosts(); // Actualizamos
+      setLoading(false); 
+  
     } catch (error) {
-      
       console.error("Error fetching posts:", error);
-      setLoading(false);
+      setLoading(false); 
     }
   };
+  
   useEffect(() => {
     if (!openDialog) {
       setSuccessMessage(""); 

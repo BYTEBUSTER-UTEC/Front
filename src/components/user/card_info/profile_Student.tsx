@@ -1,5 +1,5 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { FaGithub } from "react-icons/fa";
 import { FaLinkedin } from "react-icons/fa";
 import axios from 'axios';
@@ -18,13 +18,14 @@ import {
 import { Input } from "@/components/ui/input"
 import { Label } from "@/components/ui/label"
 import { getBaseURL } from '@/lib/utils';
-
+import { FollowerStudenteCard } from '../followerscard_students';
 //Redux
 import { useDispatch, UseDispatch } from 'react-redux';
 import { set, setProfileImage } from '@/store/user';
 
 
 const base_url = `${getBaseURL()}/student-user`;
+const base_url_seguidores = `${getBaseURL()}/student-profile/followers`;
 
 interface UserProfile {
   Institute: string;
@@ -55,6 +56,32 @@ export const PersonCard = ({ info }: { info: PersonInfo | undefined }) => {
 
   //---Imagen
   const [file, setFile] = useState<File | null>(null);
+
+  // Seguidores
+  const [followers, setFollowers] = useState<any[]>([])
+  const [lenfFollowers, setLenFollowers] = useState<any>([])
+  const [loadingLen, setloadingLen] = useState<any>(false)
+
+  useEffect(() => {
+    const fetchFollowers = async () => {
+      try {
+        setloadingLen(true);
+        const response = await axios.get(`${base_url_seguidores}/${info.id}`);
+        if (response.status === 200) {
+          console.log("Followers es: ", response.data.length)
+          setLenFollowers(response.data.length)
+          setFollowers(response.data); 
+          setloadingLen(false)
+        }
+      } catch (error) {
+        console.error("Error fetching followers:", error);
+      } finally{
+        setloadingLen(false)
+      }
+    };
+
+    fetchFollowers();
+  }, [info?.id]);
 
 const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
   if (e.target.files) {
@@ -210,12 +237,12 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           </div>
 
           <div className="mt-0 space-y-4">
-            <button className="w-48 py-2 bg-[#207DCC] text-white rounded-md font-bold">Añadir</button>
-            <button className="w-48 py-2 bg-[#FFFFFF] text-[#B5B2AD] rounded-md font-bold">Chat</button>
+            {/* <button className="w-48 py-2 bg-[#207DCC] text-white rounded-md font-bold">Añadir</button> */}
+            {/* <button className="w-48 py-2 bg-[#FFFFFF] text-[#B5B2AD] rounded-md font-bold">Chat</button> */}
             <Dialog >
 
               <DialogTrigger asChild>
-                <Button className="w-48" variant="outline">Edit Profile</Button>
+                <Button className="w-48 bg-[#207DCC]">Editar perfil</Button>
               </DialogTrigger>
 
               <DialogContent className="overflow-y-auto max-h-screen  sm:max-w-[825px] flex flex-col items-center justify-center">
@@ -366,18 +393,47 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         </div>
         
         {/* Habilidades tecnicas */}
-        <div className="col-span-2">
+        {/* <div className="col-span-2">
           <h1 className="text-xl font-semibold mt-4">Habilidades Técnicas</h1>
           <div className="flex flex-wrap gap-4 mt-2">
-            {/* {info.abilities?.map((habilidad, index) => (
+            {info.abilities?.map((habilidad, index) => (
               <div key={index} className="bg-white rounded-lg p-2 min-w-[100px] text-center">
                 {habilidad}
               </div>
-            ))} */}
+            ))}
           </div>
-        </div>
+        </div> */}
+        {/* Seguidores */}
 
+        <div className="col-span-2">
+
+          <h1 className="text-xl font-semibold mt-4">
+            Seguidores{" "}
+            <strong className="text-[#9E3F90]">
+              {loadingLen ? (
+                <span>Cargando...</span> 
+              ) : (
+                `(${lenfFollowers})` 
+              )}
+            </strong>
+          </h1>
+          <span >
+            
+          </span>
+          {followers.length > 0 ? (
+            <ul className="list-disc pl-5 mt-2">
+              {followers.map((people, i) => {
+               return <FollowerStudenteCard info={people} key={i} />;
+             })}
+            </ul>
+          ) : (
+            <p>No tienes aúnseguidores.</p>
+          )}
+        </div>       
       </div>
+
+
+      
     </div>
   );
 };

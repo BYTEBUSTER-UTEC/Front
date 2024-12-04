@@ -32,8 +32,6 @@ export const CompanyCard = ({ info }: { info: PersonInfo | undefined }) => {
   
   const user: UserState = useSelector<RootState, UserState>((state) => state.user);
   
-  if (!info) return <p>No data available</p>;
-
   useEffect(() => {
     const fetchFollowers = async () => {
       setLoadingLen(true);

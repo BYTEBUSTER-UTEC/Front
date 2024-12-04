@@ -153,8 +153,8 @@ export const PostCard = ({ info,  post_id  }:
 
 
 
-    const onLike = async (post_id: BigInteger, userID:Number, setLikeButtonText: React.Dispatch<React.SetStateAction<string>>) => {
-      let body: any = {
+    const onLike = async (post_id: BigInteger, userID: number, setLikeButtonText: React.Dispatch<React.SetStateAction<string>>) => {
+      const body: any = {
         TypeReaction: "like",
         PostId: post_id,
       };

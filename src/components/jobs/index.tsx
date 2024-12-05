@@ -2,8 +2,10 @@
 
 import { JobsCard } from "./card_info";
 import { SearchBar } from "@/commons/searchbar";
+import { Spinner } from "@/commons/spinner";
+import { getOfferInfo, getPractices } from "@/services/practices";
 import { job_prev_info } from "@/types/jobsTypes";
-import React from "react";
+import React, { useEffect, useState } from "react";
 
 export const Jobs = () => {
   const jobs_prev_info = [
@@ -45,13 +47,36 @@ export const Jobs = () => {
     },
   ];
 
+  const [loading, setLoading] = useState<boolean>(true);
+  const [practices, setPractices] = useState<any>([]);
+
+  useEffect(() => {
+    const fetchPractices = async () => {
+      try {
+        const data = await getPractices();
+        setPractices(data);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+        console.log(error);
+        alert("Algo salió mal");
+      }
+    };
+    fetchPractices();
+  }, []);
+
   return (
     <div className=" w-full rounded-xl">
       <SearchBar page={"empresas"} />
-      {/* <div className="bg-[#f7f5ed] rounded-xl p-2">Lista de cards</div> */}
-      {jobs_prev_info.map((company, i) => {
-        return <JobsCard info={company} key={i} />;
-      })}
+      {loading ? (
+        <Spinner />
+      ) : (
+        <div className="flex flex-col gap-2">
+          {practices.map((practice: any, i: number) => {
+            return <JobsCard info={practice} key={i} />;
+          })}
+        </div>
+      )}
     </div>
   );
 };

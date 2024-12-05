@@ -11,12 +11,8 @@ export async function POST(request: Request) {
                 Username: body.company,
                 Password: body.password,
                 email: body.email,
-                CompanyPerfil: {
-                    Sunac: body.ruc,
-                    IndustrySector: body.type,
-                    PhoneNumber: body.phone,
-                    Address: body.address,
-                }
+                Sunac: body.ruc,
+                IndustrySector: body.type,
             }),
             headers: {
                 "Content-Type": "application/json",

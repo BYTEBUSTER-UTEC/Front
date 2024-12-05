@@ -6,14 +6,18 @@ import { useSelector } from "react-redux";
 import { RootState } from "@/store/store";
 import { UserState } from "@/types/userTypes";
 import axios from "axios";
-interface CompanyProfile {
+
+interface CompanyPerfil {
   Sunac: string;
-  GitHub: string;
+  GitHub: string | null;
   IndustrySector: string;
-  imageURL: string;
-  PhoneNumber: string;
-  Description: string;
-  Address: string;
+  imageURL: string | null;
+  PhoneNumber: string | null;
+  Description: string | null;
+  Address: string | null;
+  InfoCorta: string;
+  InfoLarga: string;
+  PortadaImg: string | null;
   CompanyUserId: number;
 }
 
@@ -22,8 +26,9 @@ interface PersonInfo {
   Username: string;
   email: string;
   Password: string;
-  CompanyPerfil: CompanyProfile;
+  CompanyPerfil: CompanyPerfil;
 }
+
 
 export const CompanyCard = ({ info }: { info: PersonInfo | undefined }) => {
   const [followers, setFollowers] = useState<any[]>([]);
@@ -52,7 +57,7 @@ export const CompanyCard = ({ info }: { info: PersonInfo | undefined }) => {
     <div className="bg-[#f7f5ed] rounded-2xl m-0 p-0">
       {/* Banner Image */}
       <div className="w-full h-72 overflow-hidden rounded-t-2xl">
-        <img src={info.CompanyPerfil.imageURL} alt="banner" className="w-full h-full object-cover" />
+        <img src={info.CompanyPerfil.PortadaImg} alt="banner" className="w-full h-full object-cover" />
       </div>
 
       {/* Profile Image */}
@@ -66,16 +71,19 @@ export const CompanyCard = ({ info }: { info: PersonInfo | undefined }) => {
           <div className="flex items-baseline gap-5">
             <h1 className="text-2xl font-bold">{info.Username}</h1>
             <span className="text-[#9E3F90]">
-              <strong>{info.CompanyPerfil.PhoneNumber}</strong>
+              <strong>{info.CompanyPerfil.Sunac}</strong>
             </span>
+            {/* <span className="text-[#9E3F90]">
+              <strong>{info.CompanyPerfil.IndustrySector}</strong>
+            </span> */}
           </div>
-          <p className="text-gray-500">{info.CompanyPerfil.IndustrySector}</p>
+          <p className="text-[#9E3F90]">{info.CompanyPerfil.IndustrySector}</p>
 
           <div className="col-span-2 mt-5">
             <h1 className="text-xl font-semibold mt-2">Información:</h1>
             <ul className="list-disc pl-5">
-              <li><strong>Descripción: </strong> {info.CompanyPerfil.Description}</li>
-              <li><strong>Dirección: </strong> {info.CompanyPerfil.Address}</li>
+              <li><strong>Descripción: </strong> {info.CompanyPerfil.InfoCorta}</li>
+              <li><strong>Dirección: </strong> {info.CompanyPerfil.InfoLarga}</li>
             </ul>
           </div>
         </div>
@@ -83,12 +91,12 @@ export const CompanyCard = ({ info }: { info: PersonInfo | undefined }) => {
         {/* LinkedIn and GitHub Buttons */}
         <div className="grid grid-cols-2 gap-4">
           <div className="flex gap-3">
-            <a href={info.CompanyPerfil.GitHub} target="_blank" rel="noopener noreferrer">
+            <a href={"https://github.com/"+info.CompanyPerfil.GitHub} target="_blank" rel="noopener noreferrer">
               <FaGithub className="w-10 h-10" />
             </a>
-            <a href={info.CompanyPerfil.Sunac} target="_blank" rel="noopener noreferrer">
+            {/* <a href={ info.CompanyPerfil.Sunac} target="_blank" rel="noopener noreferrer">
               <FaLinkedin className="w-10 h-10" />
-            </a>
+            </a> */}
           </div>
         </div>
       </div>

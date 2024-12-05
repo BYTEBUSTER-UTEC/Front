@@ -22,7 +22,9 @@ import { FollowerStudenteCard } from '../followerscard_students';
 //Redux
 import { useDispatch, UseDispatch } from 'react-redux';
 import { set, setProfileImage } from '@/store/user';
-
+import { useSelector } from "react-redux";
+import { RootState } from "@/store/store";
+import { UserState } from "@/types/userTypes";
 
 const base_url = `${getBaseURL()}/student-user`;
 const base_url_seguidores = `${getBaseURL()}/student-profile/followers`;
@@ -61,11 +63,20 @@ export const PersonCard = ({ info }: { info: PersonInfo | undefined }) => {
   const [lenfFollowers, setLenFollowers] = useState<any>([])
   const [loadingLen, setloadingLen] = useState<any>(false)
 
+  //Uso dereudx: 
+  const user: UserState = useSelector<RootState, UserState>(
+    (state) => state.user
+  ); //ID
+  console.log("user: ", user.id)
+  console.log("Aquiiiiiiiii")
+
   useEffect(() => {
     const fetchFollowers = async () => {
       try {
         setloadingLen(true);
-        const response = await axios.get(`${base_url_seguidores}/${info.id}`);
+        const url = `${base_url_seguidores}/${user.id}`
+        console.log("url__:",  url)
+        const response = await axios.get(url);
         if (response.status === 200) {
           console.log("Followers es: ", response.data.length)
           setLenFollowers(response.data.length)
@@ -118,28 +129,20 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
       return;
     }
     try {
-      const imageURL = await changeUploadImage(file);
+      // const imageURL = await changeUploadImage(file);
     
-      console.log("La url de la imagen es: ", imageURL)
+      // console.log("La url de la imagen es: ", imageURL)
 
-      const response = await axios.put(`${base_url}/${id}`, {
+      const response = await axios.put(`${base_url}/${user.id}`, {
         Name: updatedInfo.Name,
         LastName: updatedInfo.LastName,
         Password: updatedInfo.Password,
-        email: updatedInfo.email,
-        UserProfile: {
-          Institute: updatedInfo.UserProfile.Institute,
-          GitHub: updatedInfo.UserProfile.GitHub,
-          Linkedin: updatedInfo.UserProfile.Linkedin,
-          imageURL: imageURL,
-          PhoneNumber: updatedInfo.UserProfile.PhoneNumber,
-          Description: updatedInfo.UserProfile.Description,
-        },
+        email: updatedInfo.email
       });
 
       if (response.status === 200) {
         //
-        dispatch(setProfileImage({profileImageUrl: imageURL}))
+        // dispatch(setProfileImage({profileImageUrl: imageURL}))
         // dispatch(set({profileImageUrl: imageURL}))
 
         // alert('Profile updated successfully!');
@@ -148,30 +151,12 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
           Name: updatedInfo.Name,
           LastName: updatedInfo.LastName,
           email: updatedInfo.email,
-          UserProfile: {
-            ...updatedInfo.UserProfile,
-            Institute: updatedInfo.UserProfile.Institute,
-            GitHub: updatedInfo.UserProfile.GitHub,
-            Linkedin: updatedInfo.UserProfile.Linkedin,
-            imageURL: updatedInfo.UserProfile.imageURL, 
-            PhoneNumber: updatedInfo.UserProfile.PhoneNumber,
-            Description: updatedInfo.UserProfile.Description,
-          }
         }));
         setUpdatedInfoUse(prev => ({
           ...prev,
           Name: updatedInfo.Name,
           LastName: updatedInfo.LastName,
           email: updatedInfo.email,
-          UserProfile: {
-            ...updatedInfo.UserProfile,
-            Institute: updatedInfo.UserProfile.Institute,
-            GitHub: updatedInfo.UserProfile.GitHub,
-            Linkedin: updatedInfo.UserProfile.Linkedin,
-            iimageURL: updatedInfo.UserProfile.imageURL, 
-            PhoneNumber: updatedInfo.UserProfile.PhoneNumber,
-            Description: updatedInfo.UserProfile.Description,
-          }
         }));
       }
     } catch (error) {
@@ -222,7 +207,16 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         <div className="grid grid-cols-2 gap-4">
           <div className="flex gap-3">
             <div >
-            <a href={infoUse.UserProfile.GitHub} target="_blank" rel="noopener noreferrer">
+            <a
+            href={
+              info.UserProfile.GitHub.startsWith('https://github.com/')
+                ? info.UserProfile.GitHub
+                : 'https://github.com/' + info.UserProfile.GitHub
+            }
+            target="_blank"
+            rel="noopener noreferrer"
+          >
+
               <FaGithub className="w-10 h-10" />
             </a>
             
@@ -299,82 +293,22 @@ const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
                     />
                   </div>
 
-                  {/* Institute */}
+                  {/* password */}
                   <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="Institute" className="text-right">
-                      Institute
+                    <Label htmlFor="password" className="text-right">
+                      Password
                     </Label>
                     <Input
-                      id="Institute"
+                      id="password"
                       onChange={handleChange}
-                      value={updatedInfo.UserProfile.Institute}
+                      value={updatedInfo.Password}
                       className="col-span-3"
                     />
                   </div>
 
-                  {/* GitHub */}
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="GitHub" className="text-right">
-                      GitHub
-                    </Label>
-                      
-                      <Input
-                      id="GitHub"
-                      value={updatedInfo.UserProfile.GitHub}
-                      className="col-span-3"
-                      onChange={handleChange}
-                    />
-                  </div>
+                  
 
-                  {/* Linkedin */}
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="Linkedin" className="text-right">
-                      Linkedin
-                    </Label>
-                    <Input
-                      onChange={handleChange}
-                      id="Linkedin"
-                      value={updatedInfo.UserProfile.Linkedin}
-                      className="col-span-3"
-                    />
-                  </div>
-
-                
-                  {/* PhoneNumber */}
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="PhoneNumber" className="text-right">
-                      PhoneNumber
-                    </Label>
-                    <Input
-                      id="PhoneNumber"
-                      value={updatedInfo.UserProfile.PhoneNumber}
-                      onChange={handleChange}
-                      className="col-span-3"
-                    />
-                  </div>
-
-                  {/* Description */}
-                  <div className="grid grid-cols-4 items-center gap-4">
-                    <Label htmlFor="Description" className="text-right">
-                      Description
-                    </Label>
-                    <Input
-                      id="Description"
-                      value={updatedInfo.UserProfile.Description}
-                      onChange={handleChange}
-                      className="col-span-3"
-                    />
-                  </div>
-
-                  {/* Imagen */}
-                  <div className="grid grid-cols-4 items-center gap-4">
-                      <Label htmlFor="picture">Seleccione una imagen</Label>
-                      <Input
-                        id="picture"
-                        type="file"
-                        onChange={handleFileChange}
-                      />
-                  </div>
+                 
 
 
 

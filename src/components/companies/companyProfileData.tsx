@@ -11,29 +11,30 @@ import { CompanyCard } from "./companyProfile";
 const base_url = `${getBaseURL()}/company-user`;
 
 //Local storage
+interface CompanyPerfil {
+  Sunac: string;
+  GitHub: string | null;
+  IndustrySector: string;
+  imageURL: string | null;
+  PhoneNumber: string | null;
+  Description: string | null;
+  Address: string | null;
+  InfoCorta: string;
+  InfoLarga: string;
+  PortadaImg: string | null;
+  CompanyUserId: number;
+}
+
+interface PersonInfo {
+  id: number;
+  Username: string;
+  email: string;
+  Password: string;
+  CompanyPerfil: CompanyPerfil;
+}
 
 
-//End
 
-interface CompanyProfile {
-    Sunac: string;
-    GitHub: string;
-    IndustrySector: string;
-    imageURL: string;
-    PhoneNumber: string;
-    Description: string;
-    Address: string;
-    CompanyUserId: number;
-  }
-  
-  interface PersonInfo {
-    id: number;
-    Username: string;
-    email: string;
-    Password: string;
-    CompanyPerfil: CompanyProfile; 
-  }
-  
 //-----------important
 export const CompanyData = () => {
   const [personInfo, setPersonInfo] =  useState<PersonInfo | undefined>(undefined); // Permitir undeCambiar a un solo objeto en lugar de un array

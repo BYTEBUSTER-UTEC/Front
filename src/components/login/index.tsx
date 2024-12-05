@@ -53,7 +53,7 @@ const Login = () => {
           isAdmin: false,
           type: type,
           slug: '',
-          profileImageUrl: data.CompanyPerfil.imageURL || '',
+          profileImageUrl: data.CompanyProfile.imageURL || '',
         }));
       }
       router.push("/home");

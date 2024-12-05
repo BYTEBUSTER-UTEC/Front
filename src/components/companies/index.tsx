@@ -2,52 +2,46 @@
 
 import { CompaniesCard } from "./card_info";
 import { SearchBar } from "@/commons/searchbar";
-import React from "react";
+import { Spinner } from "@/commons/spinner";
+import { getCompanies } from "@/services/companies";
+import { company_user_profile_info } from "@/types/companiesTypes";
+import React, { useEffect, useState } from "react";
 
 export const Companies = () => {
-  const companies_prev_info = [
-    {
-      profile_img_url:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/c/c1/Google_%22G%22_logo.svg/768px-Google_%22G%22_logo.svg.png",
-      name: "Google Inc.",
-      verified: true,
-      role: "IT Corporation",
-      count: 12,
-      details:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia amet perferendis pariatur aut voluptas illum perspiciatis. Eos laboriosam incidunt aut sit ipsum saepe, tempore, sint dolor recusandae sequi assumenda nemo? Lorem ipsum dolor sit amet consectetur adipisicing elit. Et expedita molestiae optio quam aliquam quasi pariatur quis reiciendis rerum ut odit, voluptatem natus deserunt ducimus autem maiores dignissimos consequuntur velit!",
-      slug: "google-inc",
-    },
-    {
-      profile_img_url:
-        "https://upload.wikimedia.org/wikipedia/commons/thumb/4/44/Microsoft_logo.svg/2048px-Microsoft_logo.svg.png",
-      name: "Microsoft",
-      verified: true,
-      role: "IT Corporation",
-      count: 12,
-      details:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia amet perferendis pariatur aut voluptas illum perspiciatis. Eos laboriosam incidunt aut sit ipsum saepe, tempore, sint dolor recusandae sequi assumenda nemo? Lorem ipsum dolor sit amet consectetur adipisicing elit. Et expedita molestiae optio quam aliquam quasi pariatur quis reiciendis rerum ut odit, voluptatem natus deserunt ducimus autem maiores dignissimos consequuntur velit!",
-      slug: "microsoft",
-    },
-    {
-      profile_img_url:
-        "https://cdn0.iconfinder.com/data/icons/most-usable-logos/120/Amazon-512.png",
-      name: "Amazon",
-      verified: true,
-      role: "IT Corporation",
-      count: 12,
-      details:
-        "Lorem ipsum dolor sit amet consectetur, adipisicing elit. Officia amet perferendis pariatur aut voluptas illum perspiciatis. Eos laboriosam incidunt aut sit ipsum saepe, tempore, sint dolor recusandae sequi assumenda nemo? Lorem ipsum dolor sit amet consectetur adipisicing elit. Et expedita molestiae optio quam aliquam quasi pariatur quis reiciendis rerum ut odit, voluptatem natus deserunt ducimus autem maiores dignissimos consequuntur velit!",
-      slug: "amazon-inc",
-    },
-  ];
+  const [loading, setLoading] = useState<boolean>(true);
+
+  const [companies, setCompanies] = useState<company_user_profile_info[]>([]);
+
+  useEffect(() => {
+    const fetchCompanies = async () => {
+      try {
+        const data = await getCompanies();
+        console.log("data: ", data);
+        setCompanies(data);
+        setLoading(false);
+        return data;
+      } catch (error) {
+        console.log(error);
+        setLoading(false);
+        alert("Algo salió mal");
+      }
+    };
+    fetchCompanies();
+  }, []);
 
   return (
     <div className=" w-full rounded-xl">
       <SearchBar page={"empresas"} />
       {/* <div className="bg-[#f7f5ed] rounded-xl p-2">Lista de cards</div> */}
-      {companies_prev_info.map((company, i) => {
-        return <CompaniesCard info={company} key={i} />;
-      })}
+      {loading ? (
+        <div className="w-full h-full flex items-center justify-center">
+          <Spinner />
+        </div>
+      ) : (
+        companies.map((company, i) => {
+          return <CompaniesCard info={company} key={i} />;
+        })
+      )}
     </div>
   );
 };

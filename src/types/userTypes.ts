@@ -21,4 +21,6 @@ export interface UserState {
   surname: string;
   //isDisabled: boolean;
   profileImageUrl: string;
+  type?: string;
+  gitHubUserName?: string;
 }

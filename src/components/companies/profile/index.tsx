@@ -56,8 +56,8 @@ const users_test_info = [
 export const CompanyProfile = () => {
   const params = useParams();
   const id = params.id as string;
-  const [loading, setLoading] = useState<boolean>(false);
-  const [showModal, setShowModal] = useState<boolean>(true);
+  const [loading, setLoading] = useState<boolean>(true);
+  const [showModal, setShowModal] = useState<boolean>(false);
 
   const [localInfo, setLocalInfo] = useState<company_user_profile_info | null>(
     null

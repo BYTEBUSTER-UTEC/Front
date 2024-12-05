@@ -1,24 +1,22 @@
 "use client";
-
 import { Spinner } from "@/commons/spinner";
-import Login from "@/components/login";
-import Image from "next/image";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
 
 export default function Home() {
   const [loading, setLoading] = useState<boolean>(true);
-  const [logged, setLogged] = useState<boolean>(false);
-  console.log("asd");
 
+  const router = useRouter();
   useEffect(() => {
-    setLoading(false);
+    router.push("/home");
   }, []);
 
-  if (loading) return <Spinner />;
-  else
-    return (
-      <main className={`w-full max-h-[100vh] h-full`}>
-        <Login logged={false} />
-      </main>
-    );
+  return (
+    <main className="w-full h-[100vh]">
+      {loading ?
+        <div className="p-4">
+          <Spinner />
+        </div> : ""}
+    </main>
+  );
 }

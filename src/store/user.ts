@@ -4,8 +4,12 @@ import { createAction, createReducer } from "@reduxjs/toolkit";
 export const set = createAction<UserState>("SET");
 
 export const setProfileImage = createAction<{
-  profileImage: string;
+  profileImageUrl: string;
 }>("SET-PROFILE-IMAGE");
+
+export const setGithubUsername = createAction<{
+  githubUserName: string;
+}>("SET-GITHUB-USERNAME");
 
 export const clear = createAction<null>("CLEAR");
 
@@ -22,14 +26,17 @@ const initialState: UserState = {
 };
 
 const userReducer = createReducer(initialState, (builder) => {
-  builder.addCase(set, (state, action) => {
-    return { ...state, ...action.payload };
+  builder.addCase(set, (state, action) => { //
+    return { ...state, ...action.payload }; //paylod los nuevos valores
   });
   builder.addCase(setProfileImage, (state, action) => {
     return { ...state, ...action.payload };
   });
-  builder.addCase(clear, () => {
+  builder.addCase(clear, () => {//Lo anterior
     return { ...initialState };
+  });
+  builder.addCase(setGithubUsername, (state, action) => {
+    return { ...state, ...action.payload };
   });
 });
 

@@ -23,4 +23,3 @@ export interface UserState {
   profileImageUrl: string;
   type?: string;
   gitHubUserName?: string;
-}
